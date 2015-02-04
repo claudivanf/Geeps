@@ -8,6 +8,7 @@ import android.location.LocationManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -22,12 +23,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+
+
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+
+
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 public class MapsActivity extends FragmentActivity {
 
@@ -38,6 +43,10 @@ public class MapsActivity extends FragmentActivity {
 
     private Marker markerMe;
     private Marker markerEntregador;
+    private Location locationCliente;
+    private Location locationEntregador;
+
+    private static final int NOTIFY_ME_ID=1337;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +146,14 @@ public class MapsActivity extends FragmentActivity {
                         } else {
                             Log.d("MARKERME", "NOT NULL");
                             markerMe.setPosition(new LatLng(lat,lng));
+                            locationCliente = new Location("");
+                            locationCliente.setLatitude(lat);
+                            locationCliente.setLongitude(lng);
+                            if(locationEntregador!= null) {
+                                if (locationCliente.distanceTo(locationEntregador) < 5) {
+                                    notification();
+                                }
+                            }
                         }
 
                     }
@@ -149,6 +166,9 @@ public class MapsActivity extends FragmentActivity {
                             addMarcadorEntregador(lat, lng);
                         } else {
                             markerEntregador.setPosition(new LatLng(lat,lng));
+                            locationEntregador = new Location("");
+                            locationEntregador.setLatitude(lat);
+                            locationEntregador.setLongitude(lng);
                         }
 
                     }
@@ -166,6 +186,25 @@ public class MapsActivity extends FragmentActivity {
         });
     }
 
+    private void notification(){
+        final NotificationManager mgr=
+                (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        Notification note=new Notification(R.drawable.ic_launcher,
+                "Entregador a menos de 5 metros",
+                System.currentTimeMillis());
+
+        // This pending intent will open after notification click
+        PendingIntent i=PendingIntent.getActivity(this, 0,
+                new Intent(this, NotifyMessage.class), 0);
+
+        note.setLatestEventInfo (this, "Mensagem da notificação",
+                "Vá pegar seu pedido!", i);
+
+        //After uncomment this line you will see number of notification arrived
+        //note.number=2;
+        mgr.notify(NOTIFY_ME_ID, note);
+    }
+
     /**
      * Itá atualizar a minha posicao atual no banco de dados do Firebase
      *
@@ -179,6 +218,10 @@ public class MapsActivity extends FragmentActivity {
      * Adiciona os Markers relativo a mim
      */
     private void addMarcadorCliente(double lat, double lng) {
+
+
+
+
 
         markerMe = googleMap.addMarker(new MarkerOptions().position(
                 new LatLng(lat, lng)).title("Eu").icon(
