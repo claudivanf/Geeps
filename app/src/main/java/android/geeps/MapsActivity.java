@@ -1,6 +1,7 @@
 package android.geeps;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -16,22 +17,39 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class MapsActivity extends FragmentActivity {
 
     private GoogleMap googleMap; // Might be null if Google Play services APK is not available.
     private Firebase myFirebaseRef;
     private Firebase roomRef;
+    private String userType;
+
+    private Marker markerMe;
+    private Marker markerEntregador;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        // ver se é um cliente ou entregador que esta logado
+        Intent intent = getIntent();
+        Bundle params = intent.getExtras();
+        if(params!=null) {
+            userType= params.getString("user_type");
+        }
 
         initOfGoogleMaps();
         initOfFirebase();
@@ -72,7 +90,6 @@ public class MapsActivity extends FragmentActivity {
                     Log.d("LOCATION CHANGE", "Latitude: " + location.getLatitude() +
                             " Longitude: " + location.getLongitude());
                     refreshMyPosition(location);
-                    setUpMap(location);
                 }
             };
 
@@ -100,6 +117,46 @@ public class MapsActivity extends FragmentActivity {
             public void onDataChange(DataSnapshot snapshot) {
                 // TODO pegar os valores de latitude e longitude e setar no mapa
                 Log.d("ONCHANGE", snapshot.getValue().toString());
+                JSONObject jsonobj = null;
+                try {
+                    jsonobj = new JSONObject(snapshot.getValue().toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                //Log.d("CHILD CLIENTE", String.valueOf(users.keySet().toString()));
+                try {
+                    if (jsonobj.getJSONObject("room1").getJSONObject("CLIENTE") != null ) {
+                        double lat = (double) jsonobj.getJSONObject("room1").
+                                getJSONObject("CLIENTE").getDouble("latitude");
+                        double lng = (double) jsonobj.getJSONObject("room1").
+                                getJSONObject("CLIENTE").getDouble("longitude");
+                        if (markerMe == null) {
+                            Log.d("MARKERME", "NULL");
+                            addMarcadorCliente(lat, lng);
+                        } else {
+                            Log.d("MARKERME", "NOT NULL");
+                            markerMe.setPosition(new LatLng(lat,lng));
+                        }
+
+                    }
+                    if (jsonobj.getJSONObject("room1").getJSONObject("ENTREGADOR") != null ) {
+                        double lat = (double) jsonobj.getJSONObject("room1").
+                                getJSONObject("ENTREGADOR").getDouble("latitude");
+                        double lng = (double) jsonobj.getJSONObject("room1").
+                                getJSONObject("ENTREGADOR").getDouble("longitude");
+                        if (markerEntregador == null) {
+                            addMarcadorEntregador(lat, lng);
+                        } else {
+                            markerEntregador.setPosition(new LatLng(lat,lng));
+                        }
+
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }
 
             @Override
@@ -115,20 +172,26 @@ public class MapsActivity extends FragmentActivity {
      * @param location
      */
     private void refreshMyPosition(Location location) {
-        Map<String, LatLng> users = new HashMap<>();
-        users.put("eu", new LatLng(location.getLatitude(), location.getLongitude()));
-        roomRef.setValue(users);
+        roomRef.child(userType).setValue(new LatLng(location.getLatitude(), location.getLongitude()));
     }
 
     /**
-     * Adiciona os Markers relativo a mim e ao entregador
-     *
-     * @param location
+     * Adiciona os Markers relativo a mim
      */
-    private void setUpMap(Location location) {
-        googleMap.addMarker(new MarkerOptions().position(
-                new LatLng(location.getLatitude(), location.getLongitude())).title("Marker"));
-        googleMap.addMarker(new MarkerOptions().position(
-                new LatLng(location.getLatitude() + 0.004, location.getLongitude() + 0.004)).title("Marker"));
+    private void addMarcadorCliente(double lat, double lng) {
+
+        markerMe = googleMap.addMarker(new MarkerOptions().position(
+                new LatLng(lat, lng)).title("Eu").icon(
+                BitmapDescriptorFactory.fromResource(R.drawable.me)));
+    }
+
+    /**
+     * Adiciona os Markers relativo ao entregador
+     */
+    private void addMarcadorEntregador(double lat, double lng) {
+
+        markerEntregador = googleMap.addMarker(new MarkerOptions().position(
+                new LatLng(lat, lng)).title("Entregador").icon(
+                BitmapDescriptorFactory.fromResource(R.drawable.delivery)));
     }
 }

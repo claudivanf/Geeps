@@ -14,8 +14,12 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
-    <uses-feature android:name="android.hardware.location" android:required="true" />
-    <uses-feature android:name="android.hardware.location.gps" android:required="false" />
+    <uses-feature
+        android:name="android.hardware.location"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.location.gps"
+        android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -30,13 +34,29 @@
             android:value="AIzaSyDVD0F_Au_Dq60SwHX93fRO59_5xlkhqgI" />
 
         <activity
-            android:name=".MapsActivity"
-            android:label="@string/title_activity_maps" >
+            android:name=".ClienteEntregadorActivity"
+            android:label="@string/title_activity_cliente_entregador"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".MapsActivity"
+            android:label="@string/title_activity_maps"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".PedidosClienteActivity"
+            android:label="@string/title_activity_pedidos_cliente"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".PedidosEntregadorActivity"
+            android:label="@string/title_activity_pedidos_entregador"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 
