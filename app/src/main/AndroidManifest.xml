@@ -34,14 +34,20 @@
             android:value="AIzaSyDVD0F_Au_Dq60SwHX93fRO59_5xlkhqgI" />
 
         <activity
-            android:name=".ClienteEntregadorActivity"
-            android:label="@string/title_activity_cliente_entregador"
+            android:name=".SplashScreen"
+            android:label="Geeps"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ClienteEntregadorActivity"
+            android:label="@string/title_activity_cliente_entregador"
+            android:screenOrientation="portrait" >
+
         </activity>
         <activity
             android:name=".MapsActivity"
