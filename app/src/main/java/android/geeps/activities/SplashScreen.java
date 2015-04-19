@@ -1,10 +1,11 @@
-package android.geeps;
+package android.geeps.activities;
 
 /**
  * Created by Túlio on 18/04/2015.
  */
 import android.app.Activity;
 import android.content.Intent;
+import android.geeps.R;
 import android.os.Bundle;
 import android.os.Handler;
 

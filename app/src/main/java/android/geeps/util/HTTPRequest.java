@@ -1,4 +1,4 @@
-package android.geeps;
+package android.geeps.util;
 
 import android.os.AsyncTask;
 import android.util.Log;

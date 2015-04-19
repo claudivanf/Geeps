@@ -34,7 +34,7 @@
             android:value="AIzaSyDVD0F_Au_Dq60SwHX93fRO59_5xlkhqgI" />
 
         <activity
-            android:name=".SplashScreen"
+            android:name=".activities.SplashScreen"
             android:label="Geeps"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -44,14 +44,14 @@
         </activity>
 
         <activity
-            android:name=".ClienteEntregadorActivity"
+            android:name=".activities.ClienteEntregadorActivity"
             android:label="@string/title_activity_cliente_entregador"
             android:screenOrientation="portrait" >
 
         </activity>
 
         <activity
-            android:name=".RegistryActivity"
+            android:name=".activities.RegistryActivity"
             android:windowSoftInputMode="adjustPan"
             android:label="@string/title_activity_cliente_entregador"
             android:screenOrientation="portrait" >
@@ -59,17 +59,17 @@
         </activity>
 
         <activity
-            android:name=".MapsActivity"
+            android:name=".activities.MapsActivity"
             android:label="@string/title_activity_maps"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".PedidosClienteActivity"
+            android:name=".activities.PedidosClienteActivity"
             android:label="@string/title_activity_pedidos_cliente"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".PedidosEntregadorActivity"
+            android:name=".activities.PedidosEntregadorActivity"
             android:label="@string/title_activity_pedidos_entregador"
             android:screenOrientation="portrait">
         </activity>

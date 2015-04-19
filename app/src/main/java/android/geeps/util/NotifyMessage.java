@@ -1,4 +1,4 @@
-package android.geeps;
+package android.geeps.util;
 
 import android.app.Activity;
 import android.os.Bundle;

@@ -1,35 +1,31 @@
-package android.geeps;
+package android.geeps.activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
+import android.geeps.R;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 
-public class PedidosEntregadorActivity extends Activity {
+public class PedidosClienteActivity extends Activity {
 
     ListView pedidos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pedidos_entregador);
+        setContentView(R.layout.activity_pedidos_cliente);
 
-        pedidos = (ListView) findViewById(R.id.pedidos_entregador);
+        pedidos = (ListView) findViewById(R.id.pedidos_cliente);
         createAdapter();
         listaPedidosListener();
-
     }
 
     private void createAdapter() {
-        String[] arrayPedidos = {"Pedido 1  \n" +
-                "R: João Batista 457, B: Liberdade"};
+        String[] arrayPedidos = {"Pedido 1 - \n        Entregador Roberto Carlos"};
 
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<>(this,
@@ -43,10 +39,11 @@ public class PedidosEntregadorActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent myIntent = new Intent(getApplicationContext(), MapsActivity.class);
                 Bundle params = new Bundle();
-                params.putString("user_type", "ENTREGADOR");
+                params.putString("user_type", "CLIENTE");
                 myIntent.putExtras(params);
                 startActivity(myIntent);
             }
         });
     }
+
 }

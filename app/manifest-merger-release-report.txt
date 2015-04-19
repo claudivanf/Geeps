@@ -76,7 +76,7 @@ ADDED from AndroidManifest.xml:32:9
 		ADDED from AndroidManifest.xml:33:13
 	android:value
 		ADDED from AndroidManifest.xml:34:13
-activity#android.geeps.ClienteEntregadorActivity
+activity#android.geeps.activities.ClienteEntregadorActivity
 ADDED from AndroidManifest.xml:36:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:39:13
@@ -94,7 +94,7 @@ category#android.intent.category.LAUNCHER
 ADDED from AndroidManifest.xml:43:17
 	android:name
 		ADDED from AndroidManifest.xml:43:27
-activity#android.geeps.MapsActivity
+activity#android.geeps.activities.MapsActivity
 ADDED from AndroidManifest.xml:46:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:49:13
@@ -102,7 +102,7 @@ ADDED from AndroidManifest.xml:46:9
 		ADDED from AndroidManifest.xml:48:13
 	android:name
 		ADDED from AndroidManifest.xml:47:13
-activity#android.geeps.PedidosClienteActivity
+activity#android.geeps.activities.PedidosClienteActivity
 ADDED from AndroidManifest.xml:51:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:54:13
@@ -110,7 +110,7 @@ ADDED from AndroidManifest.xml:51:9
 		ADDED from AndroidManifest.xml:53:13
 	android:name
 		ADDED from AndroidManifest.xml:52:13
-activity#android.geeps.PedidosEntregadorActivity
+activity#android.geeps.activities.PedidosEntregadorActivity
 ADDED from AndroidManifest.xml:56:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:59:13
