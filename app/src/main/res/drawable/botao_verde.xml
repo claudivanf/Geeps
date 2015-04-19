@@ -8,7 +8,10 @@
                 android:width="0dp"
                 android:color="#ff81c051" />
             <corners
-                android:radius="2dp" />
+                android:bottomRightRadius="15dp"
+                android:bottomLeftRadius="15dp"
+                android:topLeftRadius="15dp"
+                android:topRightRadius="15dp"/>
         </shape>
     </item>
     <item>
@@ -21,7 +24,10 @@
                 android:width="0dp"
                 android:color="#ff92d050" />
             <corners
-                android:radius="2dp" />
+                android:bottomRightRadius="15dp"
+                android:bottomLeftRadius="15dp"
+                android:topLeftRadius="15dp"
+                android:topRightRadius="15dp"/>
         </shape>
     </item>
 </selector>
