@@ -4,21 +4,41 @@
     android:background="@android:color/black"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/geeps_logo"
-        android:layout_weight="2" />
+        android:layout_weight="1">
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/geeps_logo"
+            android:layout_weight="1" />
 
-    <TableLayout
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="5">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Digite seu nome e número e pressione 'Ok'"
+            android:id="@+id/textView3" />
 
-        <TableRow android:layout_weight="1">
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="2">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -39,15 +59,29 @@
                 android:textColor="#999999"
                 android:textSize="14dip"
                 android:layout_weight="70"/>
-        </TableRow>
 
-        <TableRow android:layout_weight="1">
+            </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_action_call"
                 android:layout_weight="1" />
+
+            <Spinner
+                android:layout_width="70dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@drawable/edit_text_sign_up"
+                android:layout_weight="5"
+                android:id="@+id/countries" />
 
             <EditText
                 android:id="@+id/user_phone"
@@ -61,25 +95,27 @@
                 android:singleLine="true"
                 android:textColor="#999999"
                 android:textSize="14dip"
-                android:layout_weight="70"/>
-        </TableRow>
+                android:layout_weight="65"/>
+            </LinearLayout>
 
-        <TableRow android:layout_weight="1"
-                  android:gravity="right"
-                  android:paddingTop="10dip"
-                  >
-
+        <RelativeLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:text="Ok"
-
                 android:id="@+id/btn_registry"
-                android:layout_gravity="center"
-                android:layout_marginRight="15dp"
-                android:background="@drawable/botao_verde" />
-        </TableRow>
-    </TableLayout>
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/botao_verde"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="15dp"/>
+            </RelativeLayout>
+    </LinearLayout>
 
 
 </LinearLayout>

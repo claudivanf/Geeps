@@ -52,6 +52,7 @@
 
         <activity
             android:name=".RegistryActivity"
+            android:windowSoftInputMode="adjustPan"
             android:label="@string/title_activity_cliente_entregador"
             android:screenOrientation="portrait" >
 

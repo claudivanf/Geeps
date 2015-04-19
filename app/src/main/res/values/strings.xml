@@ -9,4 +9,27 @@
     <string name="title_activity_pedidos_cliente">PedidosCliente</string>
     <string name="title_activity_pedidos_entregador">PedidosEntregador</string>
 
+    <string-array name="data01">
+        <item name="code">+01</item>
+        <item name="country">Albania</item>
+    </string-array>
+
+    <string-array name="data02">
+        <item name="code">+02</item>
+        <item name="country">Algeria</item>
+    </string-array>
+
+    <string-array name="data03">
+        <item name="code">+55</item>
+        <item name="country">Brazil</item>
+    </string-array>
+
+
+    <array name="countries">
+        <item>@array/data01</item>
+        <item>@array/data02</item>
+        <item>@array/data03</item>
+        <!--     ...        -->
+    </array>
+
 </resources>
