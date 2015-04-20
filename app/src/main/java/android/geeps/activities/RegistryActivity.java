@@ -2,6 +2,8 @@ package android.geeps.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.geeps.R;
@@ -10,7 +12,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,28 +22,70 @@ import java.util.List;
 
 public class RegistryActivity extends Activity {
 
+    public static final String PREFS_NAME = "MyPrefsFile";
+
+
     private Button souCliente;
+
+    public static final String MyPREFERENCES = "MyPrefs" ;
+    public static final String Name = "nameKey";
+    public static final String Phone = "phoneKey";
+
+
+    EditText name;
+    EditText phone;
+//    EditText countryCode;
+
+
+
+    SharedPreferences sharedpreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign_up);
 
+        name = (EditText) findViewById(R.id.user_name);
+        phone = (EditText) findViewById(R.id.user_phone);
+//        countryCode = (EditText) findViewById(R.id.editTextStreet);
+
+
         souCliente = (Button) findViewById(R.id.btn_registry);
         fillSpinnerCoutries();
         clienteListener();
+
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, getApplicationContext().MODE_PRIVATE);
+
+        if (sharedpreferences.contains(Name))
+        {
+            name.setText(sharedpreferences.getString(Name, ""));
+
+        }
+        if (sharedpreferences.contains(Phone))
+        {
+            phone.setText(sharedpreferences.getString(Phone, ""));
+
+        }
+
     }
 
     private void clienteListener() {
         souCliente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String n  = name.getText().toString();
+                String ph  = phone.getText().toString();
+
+                Editor editor = sharedpreferences.edit();
+                editor.putString(Name, n);
+                editor.putString(Phone, ph);
+                editor.commit();
+
                 Intent myIntent = new Intent(getApplicationContext(), PedidosClienteActivity.class);
                 startActivity(myIntent);
             }
         });
     }
-
 
 
     private void fillSpinnerCoutries() {
