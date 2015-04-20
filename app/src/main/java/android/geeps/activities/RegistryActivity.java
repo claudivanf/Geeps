@@ -64,6 +64,7 @@ public class RegistryActivity extends Activity {
         final Spinner p = (Spinner) findViewById(R.id.countries);
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, country);
         p.setAdapter(dataAdapter);
+        p.setSelection(2);
         p.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
