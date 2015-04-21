@@ -61,7 +61,6 @@
                 android:textColor="#666666"
                 android:textSize="16sp"
                 android:layout_weight="70"
-                android:textIsSelectable="true"
                 android:capitalize="words" />
 
             </LinearLayout>
@@ -85,11 +84,7 @@
                 android:layout_gravity="center"
                 android:background="@drawable/edit_text_sign_up"
                 android:layout_weight="5"
-                android:id="@+id/countries"  >
-
-                <requestFocus />
-
-            </Spinner>
+                android:id="@+id/countries" />
 
             <EditText
                 android:id="@+id/user_phone"
@@ -103,7 +98,8 @@
                 android:singleLine="true"
                 android:textColor="#666666"
                 android:textSize="16dip"
-                android:layout_weight="65"/>
+                android:layout_weight="65"
+                android:phoneNumber="true" />
             </LinearLayout>
 
         <RelativeLayout
