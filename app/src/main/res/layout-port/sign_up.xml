@@ -14,7 +14,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/geeps_icon"
+            android:src="@drawable/icon_name"
             android:layout_weight="1" />
 
         <TextView
@@ -49,16 +49,20 @@
             <EditText
                 android:id="@+id/user_name"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:background="@drawable/edit_text_sign_up"
-                android:hint="Nome    "
+                android:hint="Nome"
                 android:padding="5dip"
+                android:paddingLeft="15dp"
                 android:layout_marginRight="15dp"
+                android:layout_marginEnd="15dp"
                 android:singleLine="true"
-                android:textColor="#999999"
-                android:textSize="14dip"
-                android:layout_weight="70"/>
+                android:textColor="#666666"
+                android:textSize="16sp"
+                android:layout_weight="70"
+                android:textIsSelectable="true"
+                android:capitalize="words" />
 
             </LinearLayout>
 
@@ -76,25 +80,29 @@
                 android:layout_weight="1" />
 
             <Spinner
-                android:layout_width="70dp"
-                android:layout_height="30dp"
+                android:layout_width="90dp"
+                android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:background="@drawable/edit_text_sign_up"
                 android:layout_weight="5"
-                android:id="@+id/countries" />
+                android:id="@+id/countries"  >
+
+                <requestFocus />
+
+            </Spinner>
 
             <EditText
                 android:id="@+id/user_phone"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:background="@drawable/edit_text_sign_up"
                 android:hint="Telefone"
                 android:layout_gravity="center"
                 android:padding="5dip"
                 android:layout_marginRight="15dp"
                 android:singleLine="true"
-                android:textColor="#999999"
-                android:textSize="14dip"
+                android:textColor="#666666"
+                android:textSize="16dip"
                 android:layout_weight="65"/>
             </LinearLayout>
 
@@ -105,7 +113,7 @@
             android:layout_weight="1">
             <Button
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:text="Ok"
                 android:id="@+id/btn_registry"
                 android:layout_gravity="center_vertical"
@@ -113,7 +121,8 @@
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginRight="15dp"/>
+                android:layout_marginRight="15dp" />
+
             </RelativeLayout>
     </LinearLayout>
 
