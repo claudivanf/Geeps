@@ -2,6 +2,21 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="android.geeps" >
 
+    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="16" />
+    <!--  GCM requires a Google account.-->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <!--  Keeps the processor from sleeping when a message is received. -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!--      Creates a custom permission so only this app can receive its messages.
+
+     NOTE: the permission *must* be called PACKAGE.permission.C2D_MESSAGE,
+           where PACKAGE is the application's package name. -->
+    <permission android:name="com.google.android.gcm.demo.app.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+    <uses-permission android:name="com.google.android.gcm.demo.app.permission.C2D_MESSAGE" />
+    <!--  This app has permission to register and receive data message. -->
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -39,25 +54,21 @@
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activities.ClienteEntregadorActivity"
             android:label="@string/title_activity_cliente_entregador"
             android:screenOrientation="portrait" >
-
         </activity>
-
         <activity
             android:name=".activities.RegistryActivity"
-            android:windowSoftInputMode="adjustPan"
             android:label="@string/title_activity_cliente_entregador"
-            android:screenOrientation="portrait" >
-
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" >
         </activity>
-
         <activity
             android:name=".activities.MapsActivity"
             android:label="@string/title_activity_maps"
@@ -66,13 +77,29 @@
         <activity
             android:name=".activities.PedidosClienteActivity"
             android:label="@string/title_activity_pedidos_cliente"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".activities.PedidosEntregadorActivity"
             android:label="@string/title_activity_pedidos_entregador"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
+        <activity
+            android:name=".activities.DemoActivity"
+            android:label="@string/title_activity_demo_activity2"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop">
+        </activity>
+        <receiver
+            android:name=".util.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <!-- Receives the actual messages. -->
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="com.google.android.gcm.demo.app" />
+            </intent-filter>
+        </receiver>
+        <service android:name=".util.GcmIntentService" />
     </application>
 
 </manifest>

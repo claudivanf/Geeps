@@ -31,5 +31,6 @@
         <item>@array/data03</item>
         <!--     ...        -->
     </array>
+    <string name="title_activity_demo_activity2">DemoActivity2</string>
 
 </resources>

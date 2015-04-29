@@ -22,6 +22,7 @@ public class SplashScreen extends Activity {
             public void run() {
                 //Intent i = new Intent(SplashScreen.this, ClienteEntregadorActivity.class);
                 Intent i = new Intent(SplashScreen.this, RegistryActivity.class);
+//                Intent i = new Intent(SplashScreen.this, DemoActivity.class);
                 startActivity(i);
                 finish();
             }
