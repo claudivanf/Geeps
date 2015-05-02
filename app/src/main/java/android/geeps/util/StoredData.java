@@ -7,7 +7,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -23,6 +22,7 @@ public class StoredData {
     private static final String MyPREFERENCES = "MyPrefs" ;
     private static final String Name = "nameKey";
     private static final String Phone = "phoneKey";
+    private static final String CountryCode = "countryCodeKey";
 
     private static final String PROPERTY_APP_VERSION = "appVersion";
     private static final String PROPERTY_REG_ID = "registration_id";
@@ -31,37 +31,59 @@ public class StoredData {
     private static String regId = "";
     private int appVersion;
 
+    private static String name = "";
+    private static String phone = "";
+    private static String countryCode = "";
+
     /**
      * Substitute you own sender ID here. This is the project number you got
      * from the API Console, as described in "Getting Started."
      */
     String SENDER_ID = "926181984442";
 
-    private EditText name;
-    private EditText phone;
     private Activity act;
 
     private SharedPreferences sharedpreferences;
 
-    GoogleCloudMessaging gcm;
+    private GoogleCloudMessaging gcm;
     /**
      * Tag used on log messages.
      */
     static final String TAG = "GCM Demo";
 
-    public StoredData(EditText edName, EditText edPhone, Activity act){
-        this.name = edName;
-        this.phone = edPhone;
+    public StoredData(Activity act){
         this.act = act;
         sharedpreferences = act.getSharedPreferences(MyPREFERENCES, act.getApplicationContext().MODE_PRIVATE);
 
+        usingSharedPreference(act);
+
+        if (checkPlayServices()) {
+            System.out.println("##### linha 61");
+            gcm = GoogleCloudMessaging.getInstance(act);
+
+            if (regId.isEmpty()) {
+                System.out.println("##### linha 65");
+                registerInBackground();
+            }else{
+                Toast.makeText(act.getApplicationContext(), "RegId: " + regId, Toast.LENGTH_LONG).show();
+            }
+        } else {
+            Log.i(TAG, "No valid Google Play Services APK found.");
+        }
+    }
+
+    private void usingSharedPreference(Activity act) {
         if (sharedpreferences.contains(Name))
         {
-            name.setText(sharedpreferences.getString(Name, ""));
+            name = sharedpreferences.getString(Name, "");
+        }
+        if (sharedpreferences.contains(CountryCode))
+        {
+            countryCode = sharedpreferences.getString(CountryCode, "");
         }
         if (sharedpreferences.contains(Phone))
         {
-            phone.setText(sharedpreferences.getString(Phone, ""));
+            phone = sharedpreferences.getString(Phone, "");
         }
         if (sharedpreferences.contains(PROPERTY_REG_ID))
         {
@@ -71,34 +93,9 @@ public class StoredData {
         if (sharedpreferences.contains(PROPERTY_APP_VERSION))
         {
             appVersion = sharedpreferences.getInt(PROPERTY_APP_VERSION, Integer.MIN_VALUE);
-        } else{
+        } else {
             appVersion = getAppVersion(act);
         }
-
-        if (checkPlayServices()) {
-            System.out.println("##### linha 67");
-            gcm = GoogleCloudMessaging.getInstance(act);
-
-            Toast.makeText(act.getApplicationContext(), "RegId: "+regId, Toast.LENGTH_LONG).show();
-            if (regId.isEmpty()) {
-                System.out.println("##### linha 71");
-                registerInBackground();
-            }
-        } else {
-            Log.i(TAG, "No valid Google Play Services APK found.");
-        }
-
-
-    }
-
-    public boolean checkValues(){
-        if (name.getText() != null && name.getText().length() == 0){
-            return false;
-        }
-        if(phone.getText() != null && phone.getText().length() == 0){
-            return false;
-        }
-        return true;
     }
 
     /**
@@ -116,9 +113,8 @@ public class StoredData {
                     if (gcm == null) {
                         gcm = GoogleCloudMessaging.getInstance(act.getApplicationContext());
                     }
-                    regId = gcm.register(SENDER_ID);
+                    setRegId(gcm.register(SENDER_ID));
                     msg = "Device registered, registration ID= " + regId;
-
 
                     // You should send the registration ID to your server over HTTP, so it
                     // can use GCM/HTTP or CCS to send messages to your app.
@@ -149,13 +145,10 @@ public class StoredData {
 
 
     public void storeData() {
-        String n  = name.getText().toString();
-        String ph  = phone.getText().toString();
-
         SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.putString(Name, n);
-        editor.putString(Phone, ph);
-        editor.putString(PROPERTY_REG_ID, getRegId());
+        editor.putString(Name, name);
+        editor.putString(Phone, phone);
+        editor.putString(PROPERTY_REG_ID, regId);
         editor.putInt(PROPERTY_APP_VERSION, appVersion);
         editor.commit();
     }
@@ -211,4 +204,34 @@ public class StoredData {
         // Your implementation here.
     }
 
+    public static String getName() {
+        return name;
+    }
+
+    public static void setName(String name) {
+        StoredData.name = name;
+    }
+
+    public static String getPhone() {
+        return phone;
+    }
+
+    public static void setPhone(String phone) {
+        StoredData.phone = phone;
+    }
+
+    public static String getCountryCode() {
+        return countryCode;
+    }
+
+    public static void setCountryCode(String countryCode) {
+        StoredData.countryCode = countryCode;
+    }
+
+    public void saveData(String name, String phone, String countryCode){
+        setName(name);
+        setPhone(phone);
+        setCountryCode(countryCode);
+        storeData();
+    }
 }

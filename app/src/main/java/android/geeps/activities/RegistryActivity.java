@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.geeps.R;
+import android.geeps.core.User;
 import android.geeps.util.StoredData;
 import android.os.Bundle;
 import android.view.View;
@@ -22,15 +23,24 @@ public class RegistryActivity extends Activity {
 
     private Button souCliente;
 
-//    EditText countryCode;
+    private User user;
 
     private StoredData sp;
+
+    private EditText name, phone;
+    private String countryCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign_up);
-        sp = new StoredData((EditText) findViewById(R.id.user_name), (EditText) findViewById(R.id.user_phone), this);
+        sp = new StoredData(this);
+
+        this.name = (EditText) findViewById(R.id.user_name);
+        this.name.setText(sp.getName());
+
+        this.phone = (EditText) findViewById(R.id.user_phone);
+        this.phone.setText(sp.getPhone());
 
         souCliente = (Button) findViewById(R.id.btn_registry);
         fillSpinnerCoutries();
@@ -41,16 +51,14 @@ public class RegistryActivity extends Activity {
         souCliente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getSharedPrefs().storeData();
+                getSharedPrefs().saveData(name.getText().toString(), phone.getText().toString(), countryCode);
                 Intent myIntent = new Intent(getApplicationContext(), PedidosClienteActivity.class);
                 startActivity(myIntent);
             }
         });
     }
 
-
     private void fillSpinnerCoutries() {
-
         Resources r = getApplicationContext().getResources();
         TypedArray countrieCodes = r.obtainTypedArray(R.array.countries);
 
@@ -78,9 +86,9 @@ public class RegistryActivity extends Activity {
             public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 String selectedCountry = (String) p.getSelectedItem();
                 int selectedPosition = fCountry.indexOf(selectedCountry);
-                String correspondingCode = fCode.get(selectedPosition);
+                countryCode = fCode.get(selectedPosition);
                 // Here is your corresponding country code
-                System.out.println(correspondingCode);
+                System.out.println(countryCode);
             }
 
             @Override
@@ -94,7 +102,4 @@ public class RegistryActivity extends Activity {
         return sp;
     }
 
-    public void setSharedPrefs(StoredData sp) {
-        this.sp = sp;
-    }
 }
