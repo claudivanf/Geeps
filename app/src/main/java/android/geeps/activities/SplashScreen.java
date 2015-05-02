@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.geeps.R;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.ActionBarActivity;
 
 public class SplashScreen extends Activity {
 
@@ -21,7 +22,7 @@ public class SplashScreen extends Activity {
             @Override
             public void run() {
                 //Intent i = new Intent(SplashScreen.this, ClienteEntregadorActivity.class);
-                Intent i = new Intent(SplashScreen.this, RegistryActivity.class);
+                Intent i = new Intent(SplashScreen.this, MainActivity.class);
 //                Intent i = new Intent(SplashScreen.this, DemoActivity.class);
                 startActivity(i);
                 finish();

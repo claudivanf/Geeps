@@ -9,6 +9,8 @@
     <string name="title_activity_pedidos_cliente">PedidosCliente</string>
     <string name="title_activity_pedidos_entregador">PedidosEntregador</string>
 
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string-array name="data01">
         <item name="code">+01</item>
         <item name="country">Albania</item>
@@ -32,5 +34,6 @@
         <!--     ...        -->
     </array>
     <string name="title_activity_demo_activity2">DemoActivity2</string>
+    <string name="title_activity_action_bar">ActionBarActivity</string>
 
 </resources>
