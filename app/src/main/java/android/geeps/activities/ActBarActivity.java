@@ -15,7 +15,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 
-public class MainActivity extends Activity {
+public class ActBarActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
