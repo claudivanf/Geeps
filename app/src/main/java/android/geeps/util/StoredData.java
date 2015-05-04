@@ -61,12 +61,13 @@ public class StoredData {
             System.out.println("##### linha 61");
             gcm = GoogleCloudMessaging.getInstance(act);
 
-            if (regId.isEmpty()) {
-                System.out.println("##### linha 65");
-                registerInBackground();
-            }else{
-                Toast.makeText(act.getApplicationContext(), "RegId: " + regId, Toast.LENGTH_LONG).show();
-            }
+//            if (regId.isEmpty()) {
+//                System.out.println("##### linha 65");
+//                registerInBackground();
+//            }else{
+//                Toast.makeText(act.getApplicationContext(), "RegId: " + regId, Toast.LENGTH_LONG).show();
+//                System.out.println("#### "+ regId);
+//            }
         } else {
             Log.i(TAG, "No valid Google Play Services APK found.");
         }
@@ -96,6 +97,21 @@ public class StoredData {
         } else {
             appVersion = getAppVersion(act);
         }
+    }
+
+    public boolean checkDataStored(){
+        System.out.println("##### 1");
+        if(name.isEmpty()) return false;
+        System.out.println("##### 2");
+        if(phone.isEmpty()) return false;
+        System.out.println("##### 3");
+        //Ainda não estamos armazenando o código do país
+        if(countryCode.isEmpty()) return false;
+        System.out.println("##### 4");
+        if(regId.isEmpty()) return false;
+        System.out.println("##### 5");
+
+        return true;
     }
 
     /**
@@ -148,6 +164,7 @@ public class StoredData {
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putString(Name, name);
         editor.putString(Phone, phone);
+        editor.putString(CountryCode, countryCode);
         editor.putString(PROPERTY_REG_ID, regId);
         editor.putInt(PROPERTY_APP_VERSION, appVersion);
         editor.commit();
@@ -229,6 +246,7 @@ public class StoredData {
     }
 
     public void saveData(String name, String phone, String countryCode){
+        registerInBackground();
         setName(name);
         setPhone(phone);
         setCountryCode(countryCode);

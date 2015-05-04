@@ -6,7 +6,9 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.geeps.R;
+import android.geeps.core.User;
 import android.geeps.util.MainFragment;
+import android.geeps.util.StoredData;
 import android.geeps.util.TextFragment;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
@@ -27,6 +29,11 @@ public class ActBarActivity extends Activity {
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.addToBackStack(null);
         ft.commit();
+
+        StoredData sd = new StoredData(this);
+        User user = new User(sd.getPhone(), sd.getCountryCode(), sd.getName());
+
+        Toast.makeText(getApplicationContext(), "RegId: " + sd.getRegId(), Toast.LENGTH_LONG).show();
     }
 
 

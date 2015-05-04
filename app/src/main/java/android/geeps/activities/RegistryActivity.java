@@ -36,6 +36,12 @@ public class RegistryActivity extends Activity {
         setContentView(R.layout.sign_up);
         sp = new StoredData(this);
 
+        if(sp.checkDataStored()){
+            Intent i = new Intent(RegistryActivity.this, ActBarActivity.class);
+            startActivity(i);
+            finish();
+        }
+
         this.name = (EditText) findViewById(R.id.user_name);
         this.name.setText(sp.getName());
 
@@ -52,7 +58,7 @@ public class RegistryActivity extends Activity {
             @Override
             public void onClick(View v) {
                 getSharedPrefs().saveData(name.getText().toString(), phone.getText().toString(), countryCode);
-                Intent myIntent = new Intent(getApplicationContext(), PedidosClienteActivity.class);
+                Intent myIntent = new Intent(getApplicationContext(), ActBarActivity.class);
                 startActivity(myIntent);
             }
         });
@@ -80,7 +86,9 @@ public class RegistryActivity extends Activity {
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, country);
         p.setAdapter(dataAdapter);
         p.setSelection(2);
-        p.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//        countryCode = "" + 2;
+        countryCode = dataAdapter.getItem(2);
+                p.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
@@ -88,7 +96,7 @@ public class RegistryActivity extends Activity {
                 int selectedPosition = fCountry.indexOf(selectedCountry);
                 countryCode = fCode.get(selectedPosition);
                 // Here is your corresponding country code
-                System.out.println(countryCode);
+                System.out.println("### countryCode: "+countryCode);
             }
 
             @Override

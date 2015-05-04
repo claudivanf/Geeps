@@ -7,12 +7,12 @@ import java.util.List;
  * Created by Túlio on 19/04/2015.
  */
 public class User {
-    private Long phone;
+    private String phone;
     private String countryCode;
     private String name;
     private List<Order> orders;
 
-    public User(Long userPhone, String userCountryCode, String userName){
+    public User(String userPhone, String userCountryCode, String userName){
         this.phone = userPhone;
         this.countryCode = userCountryCode;
         this.name = userName;
@@ -35,11 +35,11 @@ public class User {
         this.countryCode = countryCode;
     }
 
-    public Long getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Long phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
