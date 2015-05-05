@@ -1,12 +1,15 @@
 package android.geeps.activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.geeps.R;
 import android.geeps.core.User;
 import android.geeps.util.StoredData;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +40,7 @@ public class RegistryActivity extends Activity {
         setContentView(R.layout.sign_up);
         sp = new StoredData(this);
 
-        if(sp.checkDataStored()){
+        if (sp.checkDataStored()) {
             Intent i = new Intent(RegistryActivity.this, ActBarActivity.class);
             startActivity(i);
             finish();
@@ -57,9 +61,13 @@ public class RegistryActivity extends Activity {
         souCliente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getSharedPrefs().saveData(name.getText().toString(), phone.getText().toString(), countryCode);
-                Intent myIntent = new Intent(getApplicationContext(), ActBarActivity.class);
-                startActivity(myIntent);
+                if (isConnected()) {
+                    getSharedPrefs().saveData(name.getText().toString(), phone.getText().toString(), countryCode);
+                    Intent myIntent = new Intent(getApplicationContext(), ActBarActivity.class);
+                    startActivity(myIntent);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Verifique sua conexão de internet", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
@@ -88,7 +96,7 @@ public class RegistryActivity extends Activity {
         p.setSelection(2);
 //        countryCode = "" + 2;
         countryCode = dataAdapter.getItem(2);
-                p.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        p.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
@@ -96,7 +104,7 @@ public class RegistryActivity extends Activity {
                 int selectedPosition = fCountry.indexOf(selectedCountry);
                 countryCode = fCode.get(selectedPosition);
                 // Here is your corresponding country code
-                System.out.println("### countryCode: "+countryCode);
+                System.out.println("### countryCode: " + countryCode);
             }
 
             @Override
@@ -104,6 +112,18 @@ public class RegistryActivity extends Activity {
                 // TODO Auto-generated method stub
             }
         });
+    }
+
+    /**
+     * Check internet connection.
+     *
+     * @return the connection.
+     */
+    public final boolean isConnected() {
+        ConnectivityManager connMgr = (ConnectivityManager) this
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
     }
 
     public StoredData getSharedPrefs() {
