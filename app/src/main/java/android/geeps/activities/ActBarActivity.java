@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -23,15 +24,20 @@ public class ActBarActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Fragment main = new MainFragment();
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.content_frame, main);
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        ft.addToBackStack(null);
-        ft.commit();
+//        Fragment main = new MainFragment();
+//        FragmentTransaction ft = getFragmentManager().beginTransaction();
+//        ft.replace(R.id.content_frame, main);
+//        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+//        ft.addToBackStack(null);
+//        ft.commit();
 
         StoredData sd = new StoredData(this);
         User user = new User(sd.getPhone(), sd.getCountryCode(), sd.getName());
+
+        TextView name = (TextView) findViewById(R.id.textViewName);
+        name.setText(user.getName());
+        TextView phone = (TextView) findViewById(R.id.textViewPhone);
+        phone.setText(user.getPhone());
 
         Toast.makeText(getApplicationContext(), "RegId: " + sd.getRegId(), Toast.LENGTH_LONG).show();
     }
