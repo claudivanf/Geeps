@@ -61,15 +61,28 @@ public class RegistryActivity extends Activity {
         souCliente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isConnected()) {
-                    getSharedPrefs().saveData(name.getText().toString(), phone.getText().toString(), countryCode);
-                    Intent myIntent = new Intent(getApplicationContext(), ActBarActivity.class);
-                    startActivity(myIntent);
+//                if (isConnected()) {
+                if (hasConnection(getApplicationContext())) {
+                    if(validEditText()) {
+                        getSharedPrefs().saveData(name.getText().toString(), phone.getText().toString(), countryCode);
+                        Intent myIntent = new Intent(getApplicationContext(), ActBarActivity.class);
+                        startActivity(myIntent);
+                        finish();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Preencha os dados corretamente", Toast.LENGTH_LONG).show();
+                    }
                 } else {
                     Toast.makeText(getApplicationContext(), "Verifique sua conexão de internet", Toast.LENGTH_LONG).show();
                 }
             }
         });
+    }
+
+    private boolean validEditText(){
+        if(name.getText().toString().isEmpty()) return false;
+        if(phone.getText().toString().isEmpty()) return false;
+        if(countryCode.isEmpty()) return false;
+        return true;
     }
 
     private void fillSpinnerCoutries() {
@@ -124,6 +137,30 @@ public class RegistryActivity extends Activity {
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isConnected();
+    }
+
+    /**
+     * Verifies Internet Connection
+     *
+     * @param Context
+     * @return Boolean True if has connection
+     */
+    static boolean hasConnection(Context c) {
+        boolean connectedWifi = false;
+        boolean connectedMobile = false;
+
+        ConnectivityManager cm = (ConnectivityManager) c
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo[] networks = cm.getAllNetworkInfo();
+        for (NetworkInfo ni : networks) {
+            if ("WIFI".equalsIgnoreCase(ni.getTypeName()) && ni.isConnected()) {
+                connectedWifi = true;
+            }
+            if ("MOBILE".equalsIgnoreCase(ni.getTypeName()) && ni.isConnected()) {
+                connectedMobile = true;
+            }
+        }
+        return connectedWifi || connectedMobile;
     }
 
     public StoredData getSharedPrefs() {
