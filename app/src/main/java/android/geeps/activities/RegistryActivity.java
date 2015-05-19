@@ -8,8 +8,8 @@ import android.content.res.TypedArray;
 import android.geeps.R;
 import android.geeps.core.User;
 import android.geeps.util.HTTPCheckUser;
-import android.geeps.util.HTTPGet;
 import android.geeps.util.HTTPGetUser;
+import android.geeps.util.HTTPPostUser;
 import android.geeps.util.StoredData;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -28,7 +28,7 @@ import java.util.List;
 
 public class RegistryActivity extends Activity {
 
-    private Button souCliente;
+    private Button registerButton;
 
     private User user;
 
@@ -43,39 +43,51 @@ public class RegistryActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign_up);
-        getUser = new HTTPGetUser();
-        checkUser = new HTTPCheckUser();
+//        getUser = new HTTPGetUser();
+//        checkUser = new HTTPCheckUser();
 
         sp = new StoredData(this);
 
-        if (sp.checkDataStored()) {
-            Intent i = new Intent(RegistryActivity.this, ActBarActivity.class);
-            startActivity(i);
-            finish();
-        }
-
+//        if (sp.checkDataStored()) {
+//            Intent i = new Intent(RegistryActivity.this, ActBarActivity.class);
+//            startActivity(i);
+//            finish();
+//        }
+//
         this.name = (EditText) findViewById(R.id.user_name);
-        this.name.setText(sp.getName());
-
+//        this.name.setText(sp.getName());
+//
         this.phone = (EditText) findViewById(R.id.user_phone);
-        this.phone.setText(sp.getPhone());
+//        this.phone.setText(sp.getPhone());
 
-        souCliente = (Button) findViewById(R.id.btn_registry);
+        registerButton = (Button) findViewById(R.id.btn_registry);
         fillSpinnerCoutries();
         clienteListener();
     }
 
     private void clienteListener() {
-        souCliente.setOnClickListener(new View.OnClickListener() {
+        registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                if (isConnected()) {
                 if (hasConnection(getApplicationContext())) {
-                    if(validEditText()) {
-                        getSharedPrefs().saveData(name.getText().toString(), phone.getText().toString(), countryCode);
-                        Intent myIntent = new Intent(getApplicationContext(), ActBarActivity.class);
-                        startActivity(myIntent);
-                        finish();
+                    if (validEditText()) {
+//                        getSharedPrefs().saveData(name.getText().toString(), phone.getText().toString(), countryCode);
+
+                        checkUser = new HTTPCheckUser();
+                        if (checkUser.getResponse(phone.getText().toString())){
+                            Toast.makeText(getApplicationContext(), "Usuário já cadastrado", Toast.LENGTH_LONG).show();
+                        }else{
+                            HTTPPostUser postUser = new HTTPPostUser();
+                            String mmm = postUser.registryUser(name.getText().toString(), phone.getText().toString(), countryCode,sp.getRegId());
+                            getSharedPrefs().saveData(name.getText().toString(), phone.getText().toString(), countryCode);
+                            Toast.makeText(getApplicationContext(),mmm, Toast.LENGTH_LONG).show();
+                            Intent myIntent = new Intent(getApplicationContext(), ActBarActivity.class);
+                            startActivity(myIntent);
+                            finish();
+                        }
+//                        boolean msg = checkUser.getResponse(phone.getText().toString());
+//                        Toast.makeText(getApplicationContext(), msg+"", Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(getApplicationContext(), "Preencha os dados corretamente", Toast.LENGTH_LONG).show();
                     }
@@ -150,7 +162,6 @@ public class RegistryActivity extends Activity {
     /**
      * Verifies Internet Connection
      *
-     * @param Context
      * @return Boolean True if has connection
      */
     static boolean hasConnection(Context c) {

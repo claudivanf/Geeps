@@ -23,11 +23,13 @@ public class HTTPCheckUser extends AsyncTask<String, Void, String> {
    private static final String HEADERVALUE = "application/json";
    private static final String URL = "http://geeps2.herokuapp.com/check_user";
 
-   public String getResponse(String phoneUser) {
+   public boolean getResponse(String phoneUser) {
       try {
-         return this.execute(phoneUser).get();
+          String resp = this.execute(phoneUser).get();
+          String resp_t = resp.substring(11,resp.length()-2);
+         return resp_t != null && resp_t.equals("true");
       } catch (Exception ex) {
-         return null;
+         return false;
       }
    }
 

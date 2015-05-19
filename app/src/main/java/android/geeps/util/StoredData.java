@@ -108,7 +108,7 @@ public class StoredData {
         //Ainda não estamos armazenando o código do país
         if(countryCode.isEmpty()) return false;
         System.out.println("##### 4");
-        if(regId.isEmpty()) return false;
+//        if(regId.isEmpty()) return false;
         System.out.println("##### 5");
 
         return true;
