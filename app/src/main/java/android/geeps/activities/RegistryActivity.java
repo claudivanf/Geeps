@@ -7,7 +7,9 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.geeps.R;
 import android.geeps.core.User;
+import android.geeps.util.HTTPCheckUser;
 import android.geeps.util.HTTPGet;
+import android.geeps.util.HTTPGetUser;
 import android.geeps.util.StoredData;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -34,18 +36,17 @@ public class RegistryActivity extends Activity {
 
     private EditText name, phone;
     private String countryCode;
+    private HTTPGetUser getUser;
+    private HTTPCheckUser checkUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign_up);
+        getUser = new HTTPGetUser();
+        checkUser = new HTTPCheckUser();
+
         sp = new StoredData(this);
-
-        HTTPGet http = new HTTPGet();
-        String a = http.requestJson();
-
-        Toast.makeText(getApplicationContext(), a, Toast.LENGTH_LONG).show();
-
 
         if (sp.checkDataStored()) {
             Intent i = new Intent(RegistryActivity.this, ActBarActivity.class);
