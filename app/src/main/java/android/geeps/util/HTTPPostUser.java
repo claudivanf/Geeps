@@ -16,11 +16,10 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 public class HTTPPostUser extends AsyncTask<String, Void, String> {
 
-   private static final String HEADERVALUE = "application/json";
+   private static final String HEADER_VALUE = "application/json";
     private static final String URL = "http://geeps2.herokuapp.com/usuario/cadastro";
 
    @Override
@@ -42,8 +41,8 @@ public class HTTPPostUser extends AsyncTask<String, Void, String> {
       try {
           HttpPost httpPost = new HttpPost(URL);
           httpPost.setEntity(new StringEntity(json));
-          httpPost.setHeader("Accept", HEADERVALUE);
-          httpPost.setHeader("Content-type", HEADERVALUE);
+          httpPost.setHeader("Accept", HEADER_VALUE);
+          httpPost.setHeader("Content-type", HEADER_VALUE);
           HttpClient client = new DefaultHttpClient();
 
           HttpResponse serverAnswer = client.execute(httpPost);

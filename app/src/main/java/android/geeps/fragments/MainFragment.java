@@ -1,18 +1,18 @@
-package android.geeps.activities;
+package android.geeps.fragments;
 
 import android.app.ListFragment;
 import android.content.res.Resources;
 import android.geeps.R;
 import android.geeps.adapters.UserOrderAdapter;
-import android.geeps.core.UserOrder;
+import android.geeps.adapters.ViewOrder;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.geeps.models.UserOrder;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class MainFragment extends ListFragment {
 

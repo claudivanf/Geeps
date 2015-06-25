@@ -1,6 +1,5 @@
 package android.geeps.util;
 
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -20,13 +19,13 @@ import java.util.Map;
 
 public class HTTPCheckUser extends AsyncTask<String, Void, String> {
 
-   private static final String HEADERVALUE = "application/json";
+   private static final String HEADER_VALUE = "application/json";
    private static final String URL = "http://geeps2.herokuapp.com/check_user";
 
    public boolean getResponse(String phoneUser) {
       try {
-          String resp = this.execute(phoneUser).get();
-          String resp_t = resp.substring(11,resp.length()-2);
+         String resp = this.execute(phoneUser).get();
+         String resp_t = resp.substring(11,resp.length()-2);
          return resp_t != null && resp_t.equals("true");
       } catch (Exception ex) {
          return false;
@@ -44,8 +43,8 @@ public class HTTPCheckUser extends AsyncTask<String, Void, String> {
       try {
          HttpPost httpPost = new HttpPost(URL);
          httpPost.setEntity(new StringEntity(json));
-         httpPost.setHeader("Accept", HEADERVALUE);
-         httpPost.setHeader("Content-type", HEADERVALUE);
+         httpPost.setHeader("Accept", HEADER_VALUE);
+         httpPost.setHeader("Content-type", HEADER_VALUE);
          HttpClient client = new DefaultHttpClient();
 
          HttpResponse serverAnswer = client.execute(httpPost);
@@ -69,8 +68,4 @@ public class HTTPCheckUser extends AsyncTask<String, Void, String> {
 
       return response;
    }
-
-   private ProgressDialog pdia;
-
-
 }

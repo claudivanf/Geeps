@@ -1,4 +1,4 @@
-package android.geeps.util;
+package android.geeps.fragments;
 
 
 import android.app.Fragment;

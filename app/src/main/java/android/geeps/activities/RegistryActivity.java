@@ -6,10 +6,9 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.geeps.R;
-import android.geeps.core.User;
 import android.geeps.util.HTTPCheckUser;
 import android.geeps.util.HTTPPostUser;
-import android.geeps.util.StoredData;
+import android.geeps.util.SPManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -28,10 +27,7 @@ import java.util.List;
 public class RegistryActivity extends Activity {
 
     private Button registerButton;
-
-    private User user;
-
-    private StoredData sp;
+    private SPManager spManager;
 
     private EditText name, phone;
     private String countryCode;
@@ -44,19 +40,19 @@ public class RegistryActivity extends Activity {
 //        getUser = new HTTPGetUser();
 //        checkUser = new HTTPCheckUser();
 
-        sp = new StoredData(this);
+        spManager = new SPManager(this);
 
-//        if (sp.checkDataStored()) {
+//        if (spManager.checkDataStored()) {
 //            Intent i = new Intent(RegistryActivity.this, ActBarActivity.class);
 //            startActivity(i);
 //            finish();
 //        }
 //
         this.name = (EditText) findViewById(R.id.user_name);
-//        this.name.setText(sp.getName());
+//        this.name.setText(spManager.getName());
 //
         this.phone = (EditText) findViewById(R.id.user_phone);
-//        this.phone.setText(sp.getPhone());
+//        this.phone.setText(spManager.getPhone());
 
         registerButton = (Button) findViewById(R.id.btn_registry);
         fillSpinnerCoutries();
@@ -77,8 +73,9 @@ public class RegistryActivity extends Activity {
                             Toast.makeText(getApplicationContext(), "Usuário já cadastrado", Toast.LENGTH_LONG).show();
                         }else{
                             HTTPPostUser postUser = new HTTPPostUser();
-                            String mmm = postUser.registryUser(name.getText().toString(), phone.getText().toString(), countryCode,sp.getRegId());
-                            getSharedPrefs().saveData(name.getText().toString(), phone.getText().toString(), countryCode);
+                            String mmm = postUser.registryUser(name.getText().toString(),
+                                    phone.getText().toString(), countryCode, spManager.getRegId());
+                            spManager.saveData(name.getText().toString(), phone.getText().toString(), countryCode);
                             Toast.makeText(getApplicationContext(),mmm, Toast.LENGTH_LONG).show();
                             Intent myIntent = new Intent(getApplicationContext(), ActBarActivity.class);
                             startActivity(myIntent);
@@ -97,10 +94,9 @@ public class RegistryActivity extends Activity {
     }
 
     private boolean validEditText(){
-        if(name.getText().toString().isEmpty()) return false;
-        if(phone.getText().toString().isEmpty()) return false;
-        if(countryCode.isEmpty()) return false;
-        return true;
+        return !name.getText().toString().isEmpty() &&
+                !phone.getText().toString().isEmpty() &&
+                !countryCode.isEmpty();
     }
 
     private void fillSpinnerCoutries() {
@@ -146,18 +142,6 @@ public class RegistryActivity extends Activity {
     }
 
     /**
-     * Check internet connection.
-     *
-     * @return the connection.
-     */
-    public final boolean isConnected() {
-        ConnectivityManager connMgr = (ConnectivityManager) this
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.isConnected();
-    }
-
-    /**
      * Verifies Internet Connection
      *
      * @return Boolean True if has connection
@@ -179,9 +163,4 @@ public class RegistryActivity extends Activity {
         }
         return connectedWifi || connectedMobile;
     }
-
-    public StoredData getSharedPrefs() {
-        return sp;
-    }
-
 }

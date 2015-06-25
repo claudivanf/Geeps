@@ -41,8 +41,8 @@
         android:name="android.hardware.location.gps"
         android:required="false" />
 
-    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <android:uses-permission
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="18" />
 
@@ -70,12 +70,6 @@
         </activity>
 
         <activity
-            android:name=".activities.ClienteEntregadorActivity"
-            android:label="@string/title_activity_cliente_entregador"
-            android:screenOrientation="portrait" >
-        </activity>
-
-        <activity
             android:name=".activities.RegistryActivity"
             android:label="@string/title_activity_cliente_entregador"
             android:screenOrientation="portrait"
@@ -84,16 +78,6 @@
         <activity
             android:name=".activities.MapsActivity"
             android:label="@string/title_activity_maps"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name=".activities.PedidosClienteActivity"
-            android:label="@string/title_activity_pedidos_cliente"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name=".activities.PedidosEntregadorActivity"
-            android:label="@string/title_activity_pedidos_entregador"
             android:screenOrientation="portrait" >
         </activity>
         <activity

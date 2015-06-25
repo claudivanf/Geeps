@@ -5,8 +5,8 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.geeps.R;
-import android.geeps.core.User;
-import android.geeps.util.StoredData;
+import android.geeps.fragments.MainFragment;
+import android.geeps.util.SPManager;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.view.Menu;
@@ -21,6 +21,7 @@ public class ActBarActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Fragment main = new MainFragment();
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.content_frame, main);
@@ -28,13 +29,13 @@ public class ActBarActivity extends Activity {
         ft.addToBackStack(null);
         ft.commit();
 
-        StoredData sd = new StoredData(this);
-        User user = new User(sd.getPhone(), sd.getCountryCode(), sd.getName());
+        SPManager spManager = new SPManager(this);
 
         TextView name = (TextView) findViewById(R.id.textViewName);
-        name.setText(user.getName());
         TextView phone = (TextView) findViewById(R.id.textViewPhone);
-        phone.setText(user.getPhone());
+
+        name.setText(spManager.getName());
+        phone.setText(spManager.getPhone());
 
 //        Toast.makeText(getApplicationContext(), "RegId: " + sd.getRegId(), Toast.LENGTH_LONG).show();
     }
