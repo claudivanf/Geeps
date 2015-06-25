@@ -61,13 +61,13 @@ public class StoredData {
             System.out.println("##### linha 61");
             gcm = GoogleCloudMessaging.getInstance(act);
 
-//            if (regId.isEmpty()) {
-//                System.out.println("##### linha 65");
-//                registerInBackground();
-//            }else{
-//                Toast.makeText(act.getApplicationContext(), "RegId: " + regId, Toast.LENGTH_LONG).show();
-//                System.out.println("#### "+ regId);
-//            }
+            if (regId.isEmpty()) {
+                System.out.println("##### linha 65");
+                registerInBackground();
+            }else{
+                Toast.makeText(act.getApplicationContext(), "RegId: " + regId, Toast.LENGTH_LONG).show();
+                System.out.println("#### "+ regId);
+            }
         } else {
             Log.i(TAG, "No valid Google Play Services APK found.");
         }

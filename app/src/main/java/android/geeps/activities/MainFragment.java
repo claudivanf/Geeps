@@ -1,8 +1,9 @@
-package android.geeps.util;
+package android.geeps.activities;
 
 import android.app.ListFragment;
 import android.content.res.Resources;
 import android.geeps.R;
+import android.geeps.adapters.UserOrderAdapter;
 import android.geeps.core.UserOrder;
 import android.os.Bundle;
 import android.view.View;

@@ -1,4 +1,4 @@
-package android.geeps.util;
+package android.geeps.adapters;
 
 import android.content.Context;
 import android.geeps.R;

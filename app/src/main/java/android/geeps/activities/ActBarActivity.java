@@ -2,14 +2,11 @@ package android.geeps.activities;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.geeps.R;
 import android.geeps.core.User;
-import android.geeps.util.MainFragment;
 import android.geeps.util.StoredData;
-import android.geeps.util.TextFragment;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.view.Menu;

@@ -8,7 +8,6 @@ import android.content.res.TypedArray;
 import android.geeps.R;
 import android.geeps.core.User;
 import android.geeps.util.HTTPCheckUser;
-import android.geeps.util.HTTPGetUser;
 import android.geeps.util.HTTPPostUser;
 import android.geeps.util.StoredData;
 import android.net.ConnectivityManager;
@@ -36,7 +35,6 @@ public class RegistryActivity extends Activity {
 
     private EditText name, phone;
     private String countryCode;
-    private HTTPGetUser getUser;
     private HTTPCheckUser checkUser;
 
     @Override

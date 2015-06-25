@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.geeps.util;
+package android.geeps.gcm;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
