@@ -20,7 +20,7 @@ import java.util.Map;
 public class HTTPCheckUser extends AsyncTask<String, Void, String> {
 
    private static final String HEADER_VALUE = "application/json";
-   private static final String URL = "http://geeps2.herokuapp.com/check_user";
+   private static final String URL = "http://geeps2.herokuapp.com/usuario/check";
 
    public boolean getResponse(String phoneUser) {
       try {
