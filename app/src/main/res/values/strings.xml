@@ -3,13 +3,9 @@
 
     <string name="app_name">Geeps</string>
     <string name="title_activity_maps">Map</string>
-    <string name="title_activity_cliente_entregador">ClienteEntregadorActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_pedidos_cliente">PedidosCliente</string>
-    <string name="title_activity_pedidos_entregador">PedidosEntregador</string>
-
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="cadastrar">Cadastrar</string>
 
     <string-array name="data01">
         <item name="code">+01</item>
@@ -33,7 +29,5 @@
         <item>@array/data03</item>
         <!--     ...        -->
     </array>
-    <string name="title_activity_demo_activity2">DemoActivity2</string>
-    <string name="title_activity_action_bar">ActionBarActivity</string>
 
 </resources>

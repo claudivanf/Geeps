@@ -186,7 +186,7 @@ public class MapsActivity extends FragmentActivity {
     private void notification(){
         final NotificationManager mgr=
                 (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification note=new Notification(R.drawable.ic_launcher,
+        Notification note=new Notification(R.drawable.icon_grayscale,
                 "Entregador a menos de 5 metros",
                 System.currentTimeMillis());
 

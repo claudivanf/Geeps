@@ -25,19 +25,14 @@ public class HTTPPostUser extends AsyncTask<String, Void, String> {
    @Override
    protected final String doInBackground(final String... params) {
 
-      String name = params[0];
-      String phone = params[1];
-      String countryCode = params[2];
-      String regId = params[3];
-
       Map<String, String> comment = new HashMap<String, String>();
-      comment.put("name", name);
-      comment.put("phone", phone);
-      comment.put("countryCode", countryCode);
-      comment.put("regId", regId);
+      comment.put("name", params[0]);
+      comment.put("phone", params[1]);
+      comment.put("countryCode", params[2]);
+      comment.put("regId", params[3]);
 
       String json = new GsonBuilder().create().toJson(comment, Map.class);
-       String response = "";
+      String response = "";
       try {
           HttpPost httpPost = new HttpPost(URL);
           httpPost.setEntity(new StringEntity(json));
@@ -58,7 +53,6 @@ public class HTTPPostUser extends AsyncTask<String, Void, String> {
           }
 
           br.close();
-
           response = sb.toString();
       } catch (Exception e) {
           Log.e("POST", e.getMessage());

@@ -18,7 +18,7 @@ import java.util.List;
 public class UserOrderAdapter extends ArrayAdapter<UserOrder> {
 
     public UserOrderAdapter(Context context, List<UserOrder> items) {
-        super(context, R.layout.main_fragment, items);
+        super(context, R.layout.fragment_user_order, items);
     }
 
     @Override
@@ -28,7 +28,7 @@ public class UserOrderAdapter extends ArrayAdapter<UserOrder> {
         if(convertView == null) {
             // inflate the GridView item layout
             LayoutInflater inflater = LayoutInflater.from(getContext());
-            convertView = inflater.inflate(R.layout.main_fragment, parent, false);
+            convertView = inflater.inflate(R.layout.fragment_user_order, parent, false);
 
             // initialize the view holder
             viewHolder = new ViewOrder();

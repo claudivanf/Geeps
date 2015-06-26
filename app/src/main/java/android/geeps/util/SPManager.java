@@ -45,7 +45,7 @@ public class SPManager {
         sharedpreferences = activity.getSharedPreferences(MY_PREFERENCES, activity.getApplicationContext().MODE_PRIVATE);
 
         if (!sharedpreferences.contains(PROPERTY_APP_VERSION)) {
-            storeAnyDataSP(PROPERTY_APP_VERSION, String.valueOf(getAppVersionFromContext(activity)));
+            storeAnyDataSP(PROPERTY_APP_VERSION, getAppVersionFromContext(activity));
         }
 
         if (checkPlayServices()) {
@@ -54,8 +54,6 @@ public class SPManager {
             if (getRegId().isEmpty()) {
                 // recebe o regId do google cloud e salva no shared preferences
                 getRegIdFromGoogleCloud();
-            }else{
-                Toast.makeText(activity.getApplicationContext(), "RegId: " + getRegId(), Toast.LENGTH_LONG).show();
             }
         } else {
             Log.i(TAG, "No valid Google Play Services APK found.");
@@ -114,6 +112,12 @@ public class SPManager {
     public void storeAnyDataSP(String key, String value) {
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putString(key, value);
+        editor.commit();
+    }
+
+    public void storeAnyDataSP(String key, int value) {
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putInt(key, value);
         editor.commit();
     }
 

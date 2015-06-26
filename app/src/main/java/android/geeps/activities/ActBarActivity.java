@@ -1,5 +1,6 @@
 package android.geeps.activities;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -7,6 +8,7 @@ import android.content.Intent;
 import android.geeps.R;
 import android.geeps.fragments.MainFragment;
 import android.geeps.util.SPManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.view.Menu;
@@ -17,6 +19,7 @@ import android.widget.Toast;
 
 public class ActBarActivity extends Activity {
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,53 +39,22 @@ public class ActBarActivity extends Activity {
 
         name.setText(spManager.getName());
         phone.setText(spManager.getPhone());
-
-//        Toast.makeText(getApplicationContext(), "RegId: " + sd.getRegId(), Toast.LENGTH_LONG).show();
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         int id = item.getItemId();
         switch (id) {
-//            case R.id.action_call:
-//                Intent dialer= new Intent(Intent.ACTION_DIAL);
-//                startActivity(dialer);
-//                return true;
-//            case R.id.action_speech:
-//                Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-//                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-//                        RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-//                startActivityForResult(intent, 1234);
-//
-//                return true;
-//            case R.id.action_done:
-//
-//                Bundle args = new Bundle();
-//                args.putString("Menu", "You pressed done button.");
-//                Fragment detail = new TextFragment();
-//                detail.setArguments(args);
-//                FragmentManager fragmentManager = getFragmentManager();
-//                fragmentManager.beginTransaction().replace(R.id.content_frame, detail).commit();
-//
-//                return true;
-//            case R.id.action_contacts:
-//                Toast.makeText(getApplicationContext(),"Contacts Clicked",Toast.LENGTH_SHORT).show();
-//                return true;
             case R.id.action_settings:
                 Toast.makeText(getApplicationContext(),"Settings Clicked",Toast.LENGTH_SHORT).show();
                 return true;
-//            case R.id.action_status:
-//                Toast.makeText(getApplicationContext(),"Status Clicked",Toast.LENGTH_SHORT).show();
-//                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

@@ -10,26 +10,33 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public class HTTPCheckUser extends AsyncTask<String, Void, String> {
 
    private static final String HEADER_VALUE = "application/json";
    private static final String URL = "http://geeps2.herokuapp.com/usuario/check";
 
-   public boolean getResponse(String phoneUser) {
+   public boolean check(String phoneUser) {
       try {
-         String resp = this.execute(phoneUser).get();
-         String resp_t = resp.substring(11,resp.length()-2);
-         return resp_t != null && resp_t.equals("true");
-      } catch (Exception ex) {
-         return false;
+         String response = this.execute(phoneUser).get();
+         JSONObject jsonObject = new JSONObject(response);
+         if (jsonObject.getString("success") != null) {
+            return true;
+         }
+      } catch (JSONException e) {
+      } catch (InterruptedException e) {
+      } catch (ExecutionException e) {
       }
+      return false;
    }
 
    @Override

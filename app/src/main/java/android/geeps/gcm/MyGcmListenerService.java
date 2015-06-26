@@ -27,13 +27,6 @@ public class MyGcmListenerService extends GcmListenerService {
         Log.d("MyGcmListenerService", "Message: " + message);
 
         /**
-         * Production applications would usually process the message here.
-         * Eg: - Syncing with server.
-         *     - Store message in local database.
-         *     - Update UI.
-         */
-
-        /**
          * In some cases it may be useful to show a notification indicating to the user
          * that a message was received.
          */
@@ -54,7 +47,7 @@ public class MyGcmListenerService extends GcmListenerService {
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.geeps_icon)
+                .setSmallIcon(R.drawable.icon_grayscale)
                 .setContentTitle("GEEPS")
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setContentText(message)

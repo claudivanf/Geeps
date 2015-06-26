@@ -12,23 +12,21 @@ import android.os.Handler;
 
 public class SplashScreen extends Activity {
 
-    private static final int SPLASHTIMEOUT = 2000;
-    private SPManager sp;
+    private static final int SPLASH_TIMEOUT = 2000;
+    private SPManager spManager;
 
     @Override
     protected final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.splash_screen);
-        sp = new SPManager(this);
-
-
+        spManager = new SPManager(this);
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
 
-                if (!sp.checkDataStored()) {
+                if (!spManager.checkDataStored()) {
                     Intent i = new Intent(SplashScreen.this, RegistryActivity.class);
                     startActivity(i);
                     finish();
@@ -37,17 +35,8 @@ public class SplashScreen extends Activity {
                     startActivity(i);
                     finish();
                 }
-
-
-
-                //Intent i = new Intent(SplashScreen.this, ClienteEntregadorActivity.class);
-//                Intent i = new Intent(SplashScreen.this, RegistryActivity.class);
-//                Intent i = new Intent(SplashScreen.this, DemoActivity.class);
-//                Intent i = new Intent(SplashScreen.this, ActBarActivity.class);
-                //startActivity(i);
-                //finish();
             }
-        }, SplashScreen.SPLASHTIMEOUT);
+        }, SplashScreen.SPLASH_TIMEOUT);
     }
 
 }
