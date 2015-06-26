@@ -22,7 +22,7 @@ public class MyGcmListenerService extends GcmListenerService {
 
     @Override
     public void onMessageReceived(String from, Bundle data) {
-        String message = data.getString("message");
+        String message = data.getString("PEDIDO_NOTIFICATION");
         Log.d("MyGcmListenerService", "From: " + from);
         Log.d("MyGcmListenerService", "Message: " + message);
 
@@ -55,11 +55,14 @@ public class MyGcmListenerService extends GcmListenerService {
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.geeps_icon)
-                .setContentTitle("GCM Message")
+                .setContentTitle("GEEPS")
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setContentText(message)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);
+                //.setStyle(new NotificationCompat.BigTextStyle()
+                  //      .bigText(message));
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
