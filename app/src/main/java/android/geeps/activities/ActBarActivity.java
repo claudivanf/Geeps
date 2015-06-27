@@ -6,7 +6,8 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.geeps.R;
-import android.geeps.fragments.MainFragment;
+import android.geeps.activities.fragments.MainFragment;
+import android.geeps.services.EntregadorService;
 import android.geeps.util.SPManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -39,6 +40,9 @@ public class ActBarActivity extends Activity {
 
         name.setText(spManager.getName());
         phone.setText(spManager.getPhone());
+
+        Intent intent = new Intent(this, EntregadorService.class);
+        startService(intent);
     }
 
 

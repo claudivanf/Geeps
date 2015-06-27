@@ -49,4 +49,10 @@ public class UserOrderAdapter extends ArrayAdapter<UserOrder> {
 
         return convertView;
     }
+
+    private class ViewOrder {
+        ImageView icon;
+        TextView description;
+        TextView title;
+    }
 }

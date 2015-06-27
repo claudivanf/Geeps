@@ -1,4 +1,4 @@
-package android.geeps.util;
+package android.geeps.http;
 
 import android.os.AsyncTask;
 import android.util.Log;

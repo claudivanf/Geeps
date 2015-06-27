@@ -1,10 +1,9 @@
-package android.geeps.fragments;
+package android.geeps.activities.fragments;
 
 import android.app.ListFragment;
 import android.content.res.Resources;
 import android.geeps.R;
 import android.geeps.adapters.UserOrderAdapter;
-import android.geeps.adapters.ViewOrder;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;

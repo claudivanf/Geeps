@@ -16,7 +16,7 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import java.io.IOException;
 
 /**
- * Created by Túlio on 02/05/2015.
+ * Manager para gerenciar transações com o Shared Preferences.
  */
 public class SPManager {
     private static final String MY_PREFERENCES = "MyPrefs" ;
@@ -121,9 +121,6 @@ public class SPManager {
         editor.commit();
     }
 
-    /**
-     * @return Application's version code from the {@code PackageManager}.
-     */
     private int getAppVersionFromContext(Context context) {
         try {
             PackageInfo packageInfo = context.getPackageManager()

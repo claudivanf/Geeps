@@ -32,7 +32,6 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <uses-feature
         android:name="android.hardware.location"
@@ -100,7 +99,7 @@
             </intent-filter>
         </receiver>
         <service
-            android:name="android.geeps.gcm.MyGcmListenerService"
+            android:name=".services.MyGcmListenerService"
             android:exported="false" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
@@ -113,6 +112,7 @@
                 <action android:name="com.google.android.gms.iid.InstanceID"/>
             </intent-filter>
         </service>
+        <service android:name=".services.EntregadorService" />
 
     </application>
 
