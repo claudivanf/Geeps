@@ -1,6 +1,5 @@
 package android.geeps.activities;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -9,7 +8,6 @@ import android.geeps.R;
 import android.geeps.activities.fragments.MainFragment;
 import android.geeps.services.EntregadorService;
 import android.geeps.util.SPManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.view.Menu;
@@ -20,7 +18,6 @@ import android.widget.Toast;
 
 public class ActBarActivity extends Activity {
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,11 +32,7 @@ public class ActBarActivity extends Activity {
 
         SPManager spManager = new SPManager(this);
 
-        TextView name = (TextView) findViewById(R.id.textViewName);
-        TextView phone = (TextView) findViewById(R.id.textViewPhone);
-
-        name.setText(spManager.getName());
-        phone.setText(spManager.getPhone());
+        // spManager.getName()
 
         Intent intent = new Intent(this, EntregadorService.class);
         startService(intent);

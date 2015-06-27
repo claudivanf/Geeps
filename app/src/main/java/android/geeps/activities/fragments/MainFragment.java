@@ -25,7 +25,7 @@ public class MainFragment extends ListFragment {
         mItems = new ArrayList<UserOrder>();
         Resources resources = getResources();
 
-        //Aqui adiciona itens a lista, vindos do servidor
+        // TODO Aqui adiciona itens a lista, vindos do servidor
         mItems.add(new UserOrder(resources.getDrawable(R.drawable.icon), "Example", "Description"));
         mItems.add(new UserOrder(resources.getDrawable(R.drawable.icon), "Example2", "Description"));
         mItems.add(new UserOrder(resources.getDrawable(R.drawable.icon), "Example3", "Description"));
@@ -39,16 +39,14 @@ public class MainFragment extends ListFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // remove the dividers from the ListView of the ListFragment
-        getListView().setDivider(null);
+        //getListView().setDivider(null);
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         // retrieve theListView item
         UserOrder item = mItems.get(position);
-
-        // do something
-        Toast.makeText(getActivity(), item.title, Toast.LENGTH_SHORT).show();
+        // TODO chamar o map activity and conectar com o FirebaseCliente e criar a sala a partir do id do pedido
     }
 
 }
