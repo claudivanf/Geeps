@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -61,7 +60,6 @@ public class ActBarActivity extends Activity {
         if (requestCode == 1234 && resultCode == RESULT_OK) {
             String voice_text = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).get(0);
             Toast.makeText(getApplicationContext(),voice_text,Toast.LENGTH_LONG).show();
-
         }
     }
 }
