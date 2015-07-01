@@ -3,6 +3,7 @@ package android.geeps.services;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.geeps.firebase.FirebaseEntregador;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -80,6 +81,8 @@ public class EntregadorService extends Service {
 
         @Override
         public void onLocationChanged(Location location) {
+            FirebaseEntregador fbEntregador = new FirebaseEntregador();
+            //fbEntregador.init(this, .toArray()[0]);
             Log.d("LOCATION LAT", String.valueOf(location.getLatitude()));
             Log.d("LOCATION LNG", String.valueOf(location.getLongitude()));
         }

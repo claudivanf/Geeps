@@ -14,18 +14,20 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import java.io.IOException;
+import java.util.Set;
 
 /**
  * Manager para gerenciar transações com o Shared Preferences.
  */
 public class SPManager {
-    private static final String MY_PREFERENCES = "MyPrefs" ;
+    public static final String MY_PREFERENCES = "MyPrefs" ;
 
     private static final String NAME = "nameKey";
     private static final String PHONE = "phoneKey";
     private static final String COUNTRY_CODE = "countryCodeKey";
     private static final String PROPERTY_APP_VERSION = "appVersion";
     private static final String PROPERTY_REG_ID = "registration_id";
+    public static final String PEDIDOS = "pedidos";
 
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
@@ -150,6 +152,12 @@ public class SPManager {
             return false;
         }
         return true;
+    }
+
+    public Set<String> getPedidos() {
+        if (!sharedpreferences.contains(PEDIDOS))
+            return null;
+        return sharedpreferences.getStringSet(PEDIDOS, null);
     }
 
     public String getRegId() {

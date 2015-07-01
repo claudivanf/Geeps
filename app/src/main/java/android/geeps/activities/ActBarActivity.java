@@ -6,7 +6,6 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.geeps.R;
 import android.geeps.activities.fragments.MainFragment;
-import android.geeps.services.EntregadorService;
 import android.geeps.util.SPManager;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
@@ -30,11 +29,6 @@ public class ActBarActivity extends Activity {
         ft.commit();
 
         SPManager spManager = new SPManager(this);
-
-        // spManager.getName()
-
-        Intent intent = new Intent(this, EntregadorService.class);
-        startService(intent);
     }
 
 
