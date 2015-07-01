@@ -4,11 +4,16 @@ import android.app.ListFragment;
 import android.content.res.Resources;
 import android.geeps.R;
 import android.geeps.adapters.UserOrderAdapter;
+import android.geeps.http.HTTPPedidos;
+import android.geeps.models.UserOrder;
+import android.geeps.util.SPManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.Toast;
-import android.geeps.models.UserOrder;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,15 +26,24 @@ public class MainFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        SPManager spManager = new SPManager(getActivity());
         // initialize the items list
         mItems = new ArrayList<UserOrder>();
         Resources resources = getResources();
 
-        // TODO Aqui adiciona itens a lista, vindos do servidor
-        mItems.add(new UserOrder(resources.getDrawable(R.drawable.icon), "Example", "Description"));
-        mItems.add(new UserOrder(resources.getDrawable(R.drawable.icon), "Example2", "Description"));
-        mItems.add(new UserOrder(resources.getDrawable(R.drawable.icon), "Example3", "Description"));
-        mItems.add(new UserOrder(resources.getDrawable(R.drawable.icon), "Example4", "Description"));
+        HTTPPedidos httpPedidos = new HTTPPedidos();
+        JSONArray arrayPedidos = httpPedidos.getPedidos(spManager.getPhone());
+
+        for (int i = 0; i < arrayPedidos.length(); i++) {
+            try {
+                Log.d("JSON CONTENT", arrayPedidos.get(i).toString());
+                mItems.add(new UserOrder(resources.getDrawable(R.drawable.icon),
+                        arrayPedidos.getJSONObject(i).getString("status")
+                        , arrayPedidos.getJSONObject(i).getString("empresa_nome")));
+            } catch (JSONException e) {
+                Log.d("JSON PARSER ERROR", e.getMessage());
+            }
+        }
 
         // initialize and set the list adapter
         setListAdapter(new UserOrderAdapter(getActivity(), mItems));

@@ -10,6 +10,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -58,9 +59,11 @@ public class HTTPPedidos extends AsyncTask<String, Void, String> {
        return response;
    }
 
-   public String getPedidos(String phone){
+   public JSONArray getPedidos(String phone){
        try {
-           return this.execute(phone).get();
+           String response = this.execute(phone).get();
+           JSONArray arrayPedidos = new JSONArray(response);
+           return arrayPedidos;
        } catch (Exception e) {
            return null;
        }
