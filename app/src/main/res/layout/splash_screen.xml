@@ -5,25 +5,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="120dp" />
-
     <ImageView
         android:id="@+id/logo"
         android:layout_width="wrap_content"
-        android:layout_height="200dp"
+        android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
         android:src="@drawable/logo" />
-
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/progressBar"
-        android:layout_gravity="center_horizontal" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="120dp" />
 
 </LinearLayout >

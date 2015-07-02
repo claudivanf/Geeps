@@ -6,25 +6,37 @@ package android.geeps.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.geeps.R;
+import android.geeps.util.SPManager;
 import android.os.Bundle;
 import android.os.Handler;
 
 public class SplashScreen extends Activity {
 
-    private static final int SPLASHTIMEOUT = 3000;
+    private static final int SPLASH_TIMEOUT = 2000;
+    private SPManager spManager;
 
     @Override
     protected final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.splash_screen);
+        spManager = new SPManager(this);
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                //Intent i = new Intent(SplashScreen.this, ClienteEntregadorActivity.class);
-                Intent i = new Intent(SplashScreen.this, RegistryActivity.class);
-                startActivity(i);
-                finish();
+
+                if (!spManager.checkDataStored()) {
+                    Intent i = new Intent(SplashScreen.this, RegistryActivity.class);
+                    startActivity(i);
+                    finish();
+                } else {
+                    Intent i = new Intent(SplashScreen.this, ActBarActivity.class);
+                    startActivity(i);
+                    finish();
+                }
             }
-        }, SplashScreen.SPLASHTIMEOUT);
+        }, SplashScreen.SPLASH_TIMEOUT);
     }
+
 }
