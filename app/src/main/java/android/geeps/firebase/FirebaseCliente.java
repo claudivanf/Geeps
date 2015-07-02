@@ -25,8 +25,7 @@ public class FirebaseCliente {
 
     private Marker markerEntregador;
     private GoogleMap googleMap;
-
-    private String room;
+    private Firebase roomRef;
 
     private static final String FIREBASE_URL = "https://brilliant-fire-3813.firebaseio.com/";
 
@@ -39,8 +38,10 @@ public class FirebaseCliente {
         Firebase.setAndroidContext(context);
         Firebase myFirebaseRef = new Firebase(FIREBASE_URL);
 
+        roomRef = myFirebaseRef.child(room);
+
         // add um listener para quando um valor mudar no B do firebase
-        myFirebaseRef.addValueEventListener(new ValueEventListener() {
+        roomRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 Log.d("ONCHANGE", snapshot.getValue().toString());
@@ -53,7 +54,7 @@ public class FirebaseCliente {
 
                 // atualiza posição no mapa
                 try {
-                    JSONObject posicao = jsonobj.getJSONObject(room).getJSONObject("ENTREGADOR");
+                    JSONObject posicao = jsonobj.getJSONObject("ENTREGADOR");
                     double lat = (double) posicao.getDouble("latitude");
                     double lng = (double) posicao.getDouble("longitude");
                     if (markerEntregador == null) {
@@ -77,6 +78,9 @@ public class FirebaseCliente {
         });
     }
 
+    public void offConnection() {
+        roomRef.goOffline();
+    }
 
     /**
      * Adiciona os Markers relativo ao entregador

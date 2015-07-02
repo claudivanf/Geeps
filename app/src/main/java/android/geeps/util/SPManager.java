@@ -14,7 +14,8 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import java.io.IOException;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Manager para gerenciar transações com o Shared Preferences.
@@ -27,7 +28,7 @@ public class SPManager {
     private static final String COUNTRY_CODE = "countryCodeKey";
     private static final String PROPERTY_APP_VERSION = "appVersion";
     private static final String PROPERTY_REG_ID = "registration_id";
-    public static final String PEDIDOS = "pedidos";
+    public static final String PEDIDOS = "pedidoskey";
 
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
@@ -154,12 +155,6 @@ public class SPManager {
         return true;
     }
 
-    public Set<String> getPedidos() {
-        if (!sharedpreferences.contains(PEDIDOS))
-            return null;
-        return sharedpreferences.getStringSet(PEDIDOS, null);
-    }
-
     public String getRegId() {
         if (!sharedpreferences.contains(PROPERTY_REG_ID))
             return "";
@@ -196,5 +191,27 @@ public class SPManager {
         editor.putString(PROPERTY_REG_ID, getRegId());
         editor.putInt(PROPERTY_APP_VERSION, getAppVersion());
         editor.commit();
+    }
+
+    public void savePedidos(List<String> pedidos) {
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putInt(PEDIDOS + "_size", pedidos.size());
+
+        for(int i = 0; i < pedidos.size(); i++) {
+            editor.putString(PEDIDOS + "_" + i, pedidos.get(i).toString());
+        }
+
+        editor.commit();
+    }
+
+    public List<String> getPedidos() {
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        int size = sharedpreferences.getInt(PEDIDOS + "_size", 0);
+
+        List<String> list = new ArrayList<String>();
+        for(int i = 0; i < size; i++) {
+            list.add(sharedpreferences.getString(PEDIDOS + "_" + i, null));
+        }
+        return list;
     }
 }

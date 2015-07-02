@@ -2,6 +2,7 @@ package android.geeps.firebase;
 
 import android.content.Context;
 import android.location.Location;
+import android.util.Log;
 
 import com.firebase.client.Firebase;
 import com.google.android.gms.maps.model.LatLng;
@@ -33,6 +34,11 @@ public class FirebaseEntregador {
      * @param location
      */
     public void refreshMyPosition(Location location) {
+        Log.d("FIREBASE ENT", "vai atualizar a posição do entregador no firebase");
         roomRef.child("ENTREGADOR").setValue(new LatLng(location.getLatitude(), location.getLongitude()));
+    }
+
+    public void offConnection() {
+        roomRef.goOffline();
     }
 }

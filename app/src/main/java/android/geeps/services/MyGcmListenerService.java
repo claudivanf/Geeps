@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import com.google.android.gms.gcm.GcmListenerService;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -24,12 +25,17 @@ public class MyGcmListenerService extends GcmListenerService {
         sharedpreferences = getApplication().getSharedPreferences(SPManager.MY_PREFERENCES, this.getApplicationContext().MODE_PRIVATE);
 
         if(message == null){
-            // comeca a pegar a localização em tempo real
-            Intent intent = new Intent(this, EntregadorService.class);
-            startService(intent);
             message = data.getString("ENTREGADOR_NOTIFICATION");
             String pedidoId = data.getString("PEDIDO_ID");
-            storePedidoSP(pedidoId);
+
+            // comeca a pegar a localização em tempo real
+            Intent intent = new Intent(this, EntregadorService.class);
+            Bundle b = new Bundle();
+            b.putString("id_pedido", pedidoId);
+            intent.putExtras(b);
+            startService(intent);    // começa a pegar a localização do entregador
+            storePedidoSP(pedidoId); // salva o id do pedido no shared preferences
+
         } else {
             // TODO arrumar um jeito de recarregar a tela de listar pedidos
         }
@@ -53,7 +59,7 @@ public class MyGcmListenerService extends GcmListenerService {
 
     public static Set<String> getPedidos() {
         if (!sharedpreferences.contains(SPManager.PEDIDOS))
-            return null;
+            return new HashSet<String>();
         return sharedpreferences.getStringSet(SPManager.PEDIDOS, null);
     }
 }

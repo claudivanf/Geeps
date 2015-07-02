@@ -30,13 +30,20 @@ public class EntregadorService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        mylocationListener.start();
+        Bundle bundle = intent.getExtras();
+        String room = bundle.getString("id_pedido");
+        mylocationListener.start(room);
         return START_STICKY;
     }
 
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    @Override
+    public void onDestroy() {
+        mylocationListener.onConnectionSuspended(1);
     }
 
     private class MyLocationListener implements LocationListener,
@@ -48,6 +55,8 @@ public class EntregadorService extends Service {
         GoogleApiClient mGoogleApiClient;
         LocationRequest mLocationRequest;
         Context context;
+        FirebaseEntregador fbEntregador;
+        String room;
 
         public MyLocationListener(Context context) {
             this.context = context;
@@ -55,7 +64,8 @@ public class EntregadorService extends Service {
             buildGoogleApiClient();
         }
 
-        public void start() {
+        public void start(String room) {
+            this.room = room;
             mGoogleApiClient.connect();
         }
 
@@ -81,8 +91,7 @@ public class EntregadorService extends Service {
 
         @Override
         public void onLocationChanged(Location location) {
-            FirebaseEntregador fbEntregador = new FirebaseEntregador();
-            //fbEntregador.init(this, .toArray()[0]);
+            fbEntregador.refreshMyPosition(location);
             Log.d("LOCATION LAT", String.valueOf(location.getLatitude()));
             Log.d("LOCATION LNG", String.valueOf(location.getLongitude()));
         }
@@ -90,12 +99,16 @@ public class EntregadorService extends Service {
         @Override
         public void onConnected(Bundle bundle) {
             Log.d("CONNECTED :", "está conectado");
+            fbEntregador = new FirebaseEntregador();
+            fbEntregador.init(context, room);
             startLocationUpdates();
+
         }
 
         @Override
         public void onConnectionSuspended(int i) {
             Log.d("CONNECT SUSPEND :", "n está conectado");
+            fbEntregador.offConnection();
         }
 
         @Override
