@@ -28,7 +28,6 @@ public class MainFragment extends ListFragment {
 
     private List<UserOrder> mItems;        // ListView items list
     private LocationManager mLocationManager;
-    private List<String> rooms;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,10 +40,8 @@ public class MainFragment extends ListFragment {
 
         HTTPPedidos httpPedidos = new HTTPPedidos();
         JSONArray arrayPedidos = httpPedidos.getPedidos(spManager.getPhone());
-        rooms = new ArrayList<String>();
         for (int i = 0; i < arrayPedidos.length(); i++) {
             try {
-                rooms.add(arrayPedidos.getJSONObject(i).getString("id"));
                 Log.d("JSON CONTENT", arrayPedidos.get(i).toString());
                 mItems.add(new UserOrder(resources.getDrawable(R.drawable.icon),
                         arrayPedidos.getJSONObject(i).getString("status")
@@ -53,9 +50,6 @@ public class MainFragment extends ListFragment {
                 Log.d("JSON PARSER ERROR", e.getMessage());
             }
         }
-
-        spManager.savePedidos(rooms);
-
 
         // initialize and set the list adapter
         setListAdapter(new UserOrderAdapter(getActivity(), mItems));

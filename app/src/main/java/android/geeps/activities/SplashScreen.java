@@ -31,12 +31,15 @@ public class SplashScreen extends Activity {
                     startActivity(i);
                     finish();
                 } else {
-                    Intent i = new Intent(SplashScreen.this, ActBarActivity.class);
-                    startActivity(i);
-                    finish();
+                    startBarActivity();
                 }
             }
         }, SplashScreen.SPLASH_TIMEOUT);
     }
 
+    private void startBarActivity() {
+        Intent i = new Intent(SplashScreen.this, ActBarActivity.class);
+        startActivity(i);
+        finish();
+    }
 }

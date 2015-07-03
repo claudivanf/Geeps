@@ -28,7 +28,6 @@ public class SPManager {
     private static final String COUNTRY_CODE = "countryCodeKey";
     private static final String PROPERTY_APP_VERSION = "appVersion";
     private static final String PROPERTY_REG_ID = "registration_id";
-    public static final String PEDIDOS = "pedidoskey";
 
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
@@ -82,15 +81,6 @@ public class SPManager {
                     storeAnyDataSP(PROPERTY_REG_ID, regId);
                     msg = "Device registered, registration ID= " + regId;
 
-                    // You should send the registration ID to your server over HTTP, so it
-                    // can use GCM/HTTP or CCS to send messages to your app.
-                    //sendRegistrationIdToBackend();
-
-                    // For this demo: we don't need to send it because the device will send
-                    // upstream messages to a server that echo back the message using the
-                    // 'from' address in the message.
-//                    Toast.makeText(activity.getApplicationContext(), msg, Toast.LENGTH_LONG).show();
-                    // Persist the regID - no need to register again.
                 } catch (IOException ex) {
                     msg = "Error :" + ex.getMessage();
                     Toast.makeText(activity.getApplicationContext(), "Error: "+msg, Toast.LENGTH_LONG).show();
@@ -191,27 +181,5 @@ public class SPManager {
         editor.putString(PROPERTY_REG_ID, getRegId());
         editor.putInt(PROPERTY_APP_VERSION, getAppVersion());
         editor.commit();
-    }
-
-    public void savePedidos(List<String> pedidos) {
-        SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.putInt(PEDIDOS + "_size", pedidos.size());
-
-        for(int i = 0; i < pedidos.size(); i++) {
-            editor.putString(PEDIDOS + "_" + i, pedidos.get(i).toString());
-        }
-
-        editor.commit();
-    }
-
-    public List<String> getPedidos() {
-        SharedPreferences.Editor editor = sharedpreferences.edit();
-        int size = sharedpreferences.getInt(PEDIDOS + "_size", 0);
-
-        List<String> list = new ArrayList<String>();
-        for(int i = 0; i < size; i++) {
-            list.add(sharedpreferences.getString(PEDIDOS + "_" + i, null));
-        }
-        return list;
     }
 }

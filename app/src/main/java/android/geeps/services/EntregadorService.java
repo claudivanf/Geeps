@@ -31,7 +31,7 @@ public class EntregadorService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Bundle bundle = intent.getExtras();
-        String room = bundle.getString("id_pedido");
+        String room = bundle.getString("entregador_id");
         mylocationListener.start(room);
         return START_STICKY;
     }

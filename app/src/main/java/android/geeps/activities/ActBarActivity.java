@@ -6,7 +6,6 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.geeps.R;
 import android.geeps.activities.fragments.MainFragment;
-import android.geeps.util.SPManager;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.view.Menu;
@@ -20,15 +19,6 @@ public class ActBarActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        Fragment main = new MainFragment();
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.content_frame, main);
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        ft.addToBackStack(null);
-        ft.commit();
-
-        SPManager spManager = new SPManager(this);
     }
 
 
@@ -55,5 +45,19 @@ public class ActBarActivity extends Activity {
             String voice_text = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).get(0);
             Toast.makeText(getApplicationContext(),voice_text,Toast.LENGTH_LONG).show();
         }
+    }
+
+    /**
+     * Vai ser chamado depois do oncreate, ou quando estiver em foreground.
+     */
+    @Override
+    protected void onResume () {
+        super.onResume();
+        Fragment main = new MainFragment();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.content_frame, main);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.addToBackStack(null);
+        ft.commit();
     }
 }
