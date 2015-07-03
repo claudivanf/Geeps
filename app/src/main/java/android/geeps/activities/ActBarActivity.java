@@ -5,7 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.geeps.R;
-import android.geeps.activities.fragments.MainFragment;
+import android.geeps.activities.fragments.PedidosListFragment;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.view.Menu;
@@ -18,13 +18,13 @@ public class ActBarActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_action_bar);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.menu_action_bar, menu);
         return true;
     }
 
@@ -53,9 +53,9 @@ public class ActBarActivity extends Activity {
     @Override
     protected void onResume () {
         super.onResume();
-        Fragment main = new MainFragment();
+        Fragment main = new PedidosListFragment();
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.content_frame, main);
+        ft.replace(R.id.container, main);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.addToBackStack(null);
         ft.commit();

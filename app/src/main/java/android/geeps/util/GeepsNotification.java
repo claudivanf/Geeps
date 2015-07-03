@@ -41,7 +41,6 @@ public class GeepsNotification {
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        // TODO Tem que ver esse id aqui, não sei como funciona esse esquema :x
         notificationManager.notify(id, notificationBuilder.build());
     }
 

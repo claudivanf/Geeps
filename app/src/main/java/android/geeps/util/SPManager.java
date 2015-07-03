@@ -84,9 +84,6 @@ public class SPManager {
                 } catch (IOException ex) {
                     msg = "Error :" + ex.getMessage();
                     Toast.makeText(activity.getApplicationContext(), "Error: "+msg, Toast.LENGTH_LONG).show();
-                    // If there is an error, don't just keep trying to register.
-                    // Require the user to click a button again, or perform
-                    // exponential back-off.
                 }
                 return msg;
             }
