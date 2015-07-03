@@ -93,8 +93,10 @@ public class FirebaseCliente {
      */
     private void addMarcadorEntregador(double lat, double lng) {
 
-        markerEntregador = googleMap.addMarker(new MarkerOptions().position(
-              new LatLng(lat, lng)).title("Entregador").icon(
-                BitmapDescriptorFactory.fromResource(R.drawable.icon_grayscale)));
+        if (googleMap != null) {
+            markerEntregador = googleMap.addMarker(new MarkerOptions().position(
+                    new LatLng(lat, lng)).title("Entregador").icon(
+                    BitmapDescriptorFactory.fromResource(R.drawable.icon_grayscale_small)));
+        }
     }
 }
