@@ -4,6 +4,7 @@ import android.app.ListFragment;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.geeps.R;
+import android.geeps.activities.ActBarActivity;
 import android.geeps.activities.MapsActivity;
 import android.geeps.adapters.UserOrderAdapter;
 import android.geeps.http.HTTPPedidos;
@@ -58,11 +59,13 @@ public class PedidosListFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
 
-        String entregador_id = mItems.get(position).entregador_id;
-        Bundle bundle = new Bundle();
-        bundle.putString("entregador_id", entregador_id);
-        Intent intent = new Intent(getActivity(), MapsActivity.class);
-        intent.putExtras(bundle);
-        startActivity(intent);
+        if(((ActBarActivity) getActivity()).checkInternet() && ((ActBarActivity) getActivity()).checkGPSConnection()) {
+            String entregador_id = mItems.get(position).entregador_id;
+            Bundle bundle = new Bundle();
+            bundle.putString("entregador_id", entregador_id);
+            Intent intent = new Intent(getActivity(), MapsActivity.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
     }
 }
