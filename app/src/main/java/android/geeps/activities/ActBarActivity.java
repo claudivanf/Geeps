@@ -6,7 +6,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.geeps.R;
 import android.geeps.activities.fragments.PedidosListFragment;
-import android.geeps.util.Checks;
+import android.geeps.dialogs.ConnectionMissingDialog;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.view.Menu;
@@ -52,10 +52,9 @@ public class ActBarActivity extends Activity {
      */
     @Override
     protected void onResume () {
-        Checks checks = new Checks(this);
-
+        ConnectionMissingDialog checks = new ConnectionMissingDialog(this);
+        super.onResume();
         if(checks.checkInternet()) {
-            super.onResume();
             Fragment main = new PedidosListFragment();
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.replace(R.id.container, main);
@@ -67,7 +66,7 @@ public class ActBarActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        Checks checks = new Checks(this);
+        ConnectionMissingDialog checks = new ConnectionMissingDialog(this);
         checks.createDialog("Deseja sair do Geeps?", "Sair", null);
     }
 }

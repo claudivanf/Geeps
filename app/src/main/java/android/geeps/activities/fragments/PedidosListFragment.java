@@ -6,9 +6,10 @@ import android.content.res.Resources;
 import android.geeps.R;
 import android.geeps.activities.MapsActivity;
 import android.geeps.adapters.UserOrderAdapter;
+import android.geeps.dialogs.ConnectionMissingDialog;
+import android.geeps.dialogs.GPSMissingDialog;
 import android.geeps.http.HTTPPedidos;
 import android.geeps.models.UserOrder;
-import android.geeps.util.Checks;
 import android.geeps.util.SPManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,6 +36,7 @@ public class PedidosListFragment extends ListFragment {
         Resources resources = getResources();
 
         HTTPPedidos httpPedidos = new HTTPPedidos();
+        System.out.println("######### "+httpPedidos);
         JSONArray arrayPedidos = httpPedidos.getPedidos(spManager.getPhone());
         for (int i = 0; i < arrayPedidos.length(); i++) {
             try {
@@ -58,9 +60,9 @@ public class PedidosListFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        Checks checks = new Checks(getActivity());
-
-        if(checks.checkInternet() && checks.checkGPSConnection()) {
+        ConnectionMissingDialog connection = new ConnectionMissingDialog(getActivity());
+        GPSMissingDialog gps = new GPSMissingDialog(getActivity());
+        if(connection.checkInternet() && gps.checkGPSConnection()) {
             String entregador_id = mItems.get(position).entregador_id;
             Bundle bundle = new Bundle();
             bundle.putString("entregador_id", entregador_id);

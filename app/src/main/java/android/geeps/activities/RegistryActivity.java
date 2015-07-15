@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.geeps.R;
+import android.geeps.dialogs.ConnectionMissingDialog;
 import android.geeps.http.HTTPCheckUser;
 import android.geeps.http.HTTPPostUser;
 import android.geeps.util.SPManager;
@@ -32,11 +33,13 @@ public class RegistryActivity extends Activity {
     private EditText name, phone;
     private String countryCode;
     private HTTPCheckUser checkUser;
+    private ConnectionMissingDialog check;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign_up);
+        this.check = new ConnectionMissingDialog(this);
 
         spManager = new SPManager(this);
 
@@ -49,37 +52,37 @@ public class RegistryActivity extends Activity {
     }
 
     private void clienteListener() {
+
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (hasConnection(getApplicationContext())) {
-                    if (validRegisterFields()) {
 
-                        checkUser = new HTTPCheckUser();
+            if (check.hasConnection()) {
+                if (validRegisterFields()) {
 
-                        if (!checkUser.check(phone.getText().toString())){
-                            Toast.makeText(getApplicationContext(), "Usuário já cadastrado", Toast.LENGTH_LONG).show();
-                        }else{
-                            HTTPPostUser postUser = new HTTPPostUser();
-                            spManager.saveData(name.getText().toString(), phone.getText().toString(), countryCode);
+                    checkUser = new HTTPCheckUser();
 
-                            String response = postUser.registryUser(
-                                    spManager.getName(),
-                                    spManager.getPhone(),
-                                    spManager.getCountryCode(),
-                                    spManager.getRegId());
-
-                            Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
-                            Intent myIntent = new Intent(getApplicationContext(), ActBarActivity.class);
-                            startActivity(myIntent);
-                            finish();
-                        }
+                    if (!checkUser.check(phone.getText().toString())) {
+                        Toast.makeText(getApplicationContext(), "Usuário já cadastrado", Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(getApplicationContext(), "Preencha os dados corretamente", Toast.LENGTH_LONG).show();
+                        HTTPPostUser postUser = new HTTPPostUser();
+                        spManager.saveData(name.getText().toString(), phone.getText().toString(), countryCode);
+
+                        String response = postUser.registryUser(
+                                spManager.getName(),
+                                spManager.getPhone(),
+                                spManager.getCountryCode(),
+                                spManager.getRegId());
+
+                        Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
+                        Intent myIntent = new Intent(getApplicationContext(), ActBarActivity.class);
+                        startActivity(myIntent);
+                        finish();
                     }
                 } else {
-                    Toast.makeText(getApplicationContext(), "Verifique sua conexão de internet", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Preencha os dados corretamente", Toast.LENGTH_LONG).show();
                 }
+            }
             }
         });
     }

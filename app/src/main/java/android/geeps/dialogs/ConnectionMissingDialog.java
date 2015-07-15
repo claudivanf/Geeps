@@ -1,18 +1,18 @@
-package android.geeps.util;
+package android.geeps.dialogs;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-public class Checks {
-    Activity act;
+public class ConnectionMissingDialog {
 
-    public Checks(Activity act){
+    private Activity act;
+
+    public ConnectionMissingDialog(Activity act){
         this.act = act;
     }
 
@@ -38,24 +38,39 @@ public class Checks {
         builder.show();
     }
 
-    public boolean checkGPSConnection(){
-        LocationManager locationManager = (LocationManager) act.getSystemService(Context.LOCATION_SERVICE);
-        boolean gpsIsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        if (!gpsIsEnabled){
-            createDialog("GPS desativado", "Ligar", android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-        }
-        return gpsIsEnabled;
-    }
-
     public boolean checkInternet(){
-        ConnectivityManager cm =
-                (ConnectivityManager)act.getSystemService(Context.CONNECTIVITY_SERVICE);
-
+        ConnectivityManager cm = (ConnectivityManager)act.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected= activeNetwork != null && activeNetwork.isConnectedOrConnecting();
         if(!isConnected){
             createDialog("Sem conexão à internet", "Ligar", android.provider.Settings.ACTION_WIFI_SETTINGS);
         }
         return isConnected;
+    }
+
+    /**
+     * Verifies Internet Connection
+     *
+     * @return Boolean True if has connection
+     */
+    public boolean hasConnection() {
+        boolean connectedWifi = false;
+        boolean connectedMobile = false;
+
+        ConnectivityManager cm = (ConnectivityManager) act.getApplicationContext()
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo[] networks = cm.getAllNetworkInfo();
+        for (NetworkInfo ni : networks) {
+            if ("WIFI".equalsIgnoreCase(ni.getTypeName()) && ni.isConnected()) {
+                connectedWifi = true;
+            }
+            if ("MOBILE".equalsIgnoreCase(ni.getTypeName()) && ni.isConnected()) {
+                connectedMobile = true;
+            }
+        }
+        if(!connectedWifi && !connectedMobile){
+            createDialog("Sem conexão à internet", "Ligar", android.provider.Settings.ACTION_WIFI_SETTINGS);
+        }
+        return connectedWifi || connectedMobile;
     }
 }
