@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -63,12 +64,17 @@ public class PedidosListFragment extends ListFragment {
         ConnectionMissingDialog connection = new ConnectionMissingDialog(getActivity());
         GPSMissingDialog gps = new GPSMissingDialog(getActivity());
         if(connection.checkInternet() && gps.checkGPSConnection()) {
-            String entregador_id = mItems.get(position).entregador_id;
-            Bundle bundle = new Bundle();
-            bundle.putString("entregador_id", entregador_id);
-            Intent intent = new Intent(getActivity(), MapsActivity.class);
-            intent.putExtras(bundle);
-            startActivity(intent);
+            if(mItems.get(position).title.equals("EM ANDAMENTO")){
+                String entregador_id = mItems.get(position).entregador_id;
+                Bundle bundle = new Bundle();
+                bundle.putString("entregador_id", entregador_id);
+                Intent intent = new Intent(getActivity(), MapsActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            } else {
+                Toast.makeText(getActivity().getApplicationContext(), "Pedido já concluído ou não saiu para entrega", Toast.LENGTH_LONG).show();
+            }
         }
     }
+
 }
