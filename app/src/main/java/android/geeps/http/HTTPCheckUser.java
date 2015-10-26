@@ -24,12 +24,13 @@ public class HTTPCheckUser extends AsyncTask<String, Void, String> {
 
    private static final String HEADER_VALUE = "application/json";
    private static final String URL = "http://geeps2.herokuapp.com/usuario/check";
+   private JSONObject jsonObject;
 
    public boolean check(String phoneUser) {
       try {
          String response = this.execute(phoneUser).get();
-         JSONObject jsonObject = new JSONObject(response);
-         if (jsonObject.getString("success") != null) {
+         this.jsonObject = new JSONObject(response);
+         if (this.jsonObject.getString("success") != null) {
             return true;
          }
       } catch (JSONException e) {
@@ -37,6 +38,10 @@ public class HTTPCheckUser extends AsyncTask<String, Void, String> {
       } catch (ExecutionException e) {
       }
       return false;
+   }
+
+   public JSONObject getJsonClient(){
+      return this.jsonObject;
    }
 
    @Override

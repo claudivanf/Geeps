@@ -21,6 +21,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,37 +59,52 @@ public class RegistryActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-            if (check.hasConnection()) {
-                if (validRegisterFields()) {
+                if (check.hasConnection()) {
+                    if (validRegisterFields()) {
 
-                    checkUser = new HTTPCheckUser();
+                        checkUser = new HTTPCheckUser();
 
-                    if (!checkUser.check(phone.getText().toString())) {
-                        Toast.makeText(getApplicationContext(), "Usuário já cadastrado", Toast.LENGTH_LONG).show();
+                        if (!checkUser.check(phone.getText().toString())) { //Usuário já cadastrado; Checar dados para preencher campos do spManager.
+                            JSONObject jo = checkUser.getJsonClient();
+                            try {
+                                if (jo.getString("regId").equals(spManager.getRegId())) { //É o mesmo usuário (de acordo com o regId). Atualizar dados no celular.
+                                    spManager.saveData(name.getText().toString(), phone.getText().toString(), countryCode);
+                                    Toast.makeText(getApplicationContext(), "Usuário atualizado", Toast.LENGTH_LONG).show();
+                                    Intent myIntent = new Intent(getApplicationContext(), ActBarActivity.class);
+                                    startActivity(myIntent);
+                                    finish();
+                                } else if (jo.getString("regId") == null) {
+                                    //TODO Atualizar dados no servidor quando o usuário não tiver ainda regId;
+                                } else { //Não é o mesmo usuário
+                                    Toast.makeText(getApplicationContext(), "Usuário já cadastrado", Toast.LENGTH_LONG).show();
+                                }
+                            } catch (Exception e) {
+                                Toast.makeText(getApplicationContext(), "Erro interno, tente novamente", Toast.LENGTH_LONG).show();
+                            }
+                        } else { //Novo usuário
+                            HTTPPostUser postUser = new HTTPPostUser();
+                            spManager.saveData(name.getText().toString(), phone.getText().toString(), countryCode);
+
+                            String response = postUser.registryUser(
+                                    spManager.getName(),
+                                    spManager.getPhone(),
+                                    spManager.getCountryCode(),
+                                    spManager.getRegId());
+
+                            Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
+                            Intent myIntent = new Intent(getApplicationContext(), ActBarActivity.class);
+                            startActivity(myIntent);
+                            finish();
+                        }
                     } else {
-                        HTTPPostUser postUser = new HTTPPostUser();
-                        spManager.saveData(name.getText().toString(), phone.getText().toString(), countryCode);
-
-                        String response = postUser.registryUser(
-                                spManager.getName(),
-                                spManager.getPhone(),
-                                spManager.getCountryCode(),
-                                spManager.getRegId());
-
-                        Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
-                        Intent myIntent = new Intent(getApplicationContext(), ActBarActivity.class);
-                        startActivity(myIntent);
-                        finish();
+                        Toast.makeText(getApplicationContext(), "Preencha os dados corretamente", Toast.LENGTH_LONG).show();
                     }
-                } else {
-                    Toast.makeText(getApplicationContext(), "Preencha os dados corretamente", Toast.LENGTH_LONG).show();
                 }
-            }
             }
         });
     }
 
-    private boolean validRegisterFields(){
+    private boolean validRegisterFields() {
         return !name.getText().toString().isEmpty() &&
                 !phone.getText().toString().isEmpty() &&
                 !countryCode.isEmpty();
@@ -125,7 +142,6 @@ public class RegistryActivity extends Activity {
                 int selectedPosition = fCountry.indexOf(selectedCountry);
                 countryCode = fCode.get(selectedPosition);
                 // Here is your corresponding country code
-                System.out.println("### countryCode: " + countryCode);
             }
 
             @Override
