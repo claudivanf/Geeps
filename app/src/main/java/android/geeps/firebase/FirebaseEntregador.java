@@ -34,7 +34,6 @@ public class FirebaseEntregador {
      * @param location
      */
     public void refreshMyPosition(Location location) {
-        Log.d("FIREBASE ENT", "vai atualizar a posição do entregador no firebase");
         roomRef.child("ENTREGADOR").setValue(new LatLng(location.getLatitude(), location.getLongitude()));
     }
 

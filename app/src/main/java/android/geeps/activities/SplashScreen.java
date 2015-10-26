@@ -12,7 +12,7 @@ import android.os.Handler;
 
 public class SplashScreen extends Activity {
 
-    private static final int SPLASH_TIMEOUT = 2000;
+    private static final int SPLASH_TIMEOUT = 1000;
     private SPManager spManager;
 
     @Override
@@ -31,12 +31,15 @@ public class SplashScreen extends Activity {
                     startActivity(i);
                     finish();
                 } else {
-                    Intent i = new Intent(SplashScreen.this, ActBarActivity.class);
-                    startActivity(i);
-                    finish();
+                    startBarActivity();
                 }
             }
         }, SplashScreen.SPLASH_TIMEOUT);
     }
 
+    private void startBarActivity() {
+        Intent i = new Intent(SplashScreen.this, ActBarActivity.class);
+        startActivity(i);
+        finish();
+    }
 }

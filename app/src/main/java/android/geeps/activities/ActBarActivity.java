@@ -5,8 +5,8 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.geeps.R;
-import android.geeps.activities.fragments.MainFragment;
-import android.geeps.util.SPManager;
+import android.geeps.activities.fragments.PedidosListFragment;
+import android.geeps.dialogs.ConnectionMissingDialog;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.view.Menu;
@@ -19,22 +19,12 @@ public class ActBarActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        Fragment main = new MainFragment();
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.content_frame, main);
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        ft.addToBackStack(null);
-        ft.commit();
-
-        SPManager spManager = new SPManager(this);
+        setContentView(R.layout.activity_action_bar);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.menu_action_bar, menu);
         return true;
     }
 
@@ -55,5 +45,28 @@ public class ActBarActivity extends Activity {
             String voice_text = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).get(0);
             Toast.makeText(getApplicationContext(),voice_text,Toast.LENGTH_LONG).show();
         }
+    }
+
+    /**
+     * Vai ser chamado depois do oncreate, ou quando estiver em foreground.
+     */
+    @Override
+    protected void onResume () {
+        ConnectionMissingDialog checks = new ConnectionMissingDialog(this);
+        super.onResume();
+        if(checks.checkInternet()) {
+            Fragment main = new PedidosListFragment();
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.container, main);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.addToBackStack(null);
+            ft.commit();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        ConnectionMissingDialog checks = new ConnectionMissingDialog(this);
+        checks.createDialog("Deseja sair do Geeps?", "Sair", null);
     }
 }

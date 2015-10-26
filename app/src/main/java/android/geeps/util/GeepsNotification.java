@@ -21,7 +21,7 @@ public class GeepsNotification {
      *
      * @param message GCM message received.
      */
-    public static void sendNotification(Context context, String message) {
+    public static void sendNotification(Context context, String message, int id) {
         Intent intent = new Intent(context, ActBarActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0 /* Request code */, intent,
@@ -38,12 +38,10 @@ public class GeepsNotification {
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setPriority(Notification.PRIORITY_MAX);
 
-
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        // TODO Tem que ver esse id aqui, não sei como funciona esse esquema :x
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        notificationManager.notify(id, notificationBuilder.build());
     }
 
 }

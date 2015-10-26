@@ -1,8 +1,13 @@
 package android.geeps.firebase;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.geeps.R;
+import android.geeps.dialogs.EntregadorMissingDialog;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -26,13 +31,14 @@ public class FirebaseCliente {
     private Marker markerEntregador;
     private GoogleMap googleMap;
     private Firebase roomRef;
+    public boolean isRastreable = true;
 
     private static final String FIREBASE_URL = "https://brilliant-fire-3813.firebaseio.com/";
 
     /**
      * Inicializador da conexão websocket utilizando o firebase
      */
-    private void init(Context context, GoogleMap googleMap, final String room) {
+    public void init(final Activity context, GoogleMap googleMap, final String room) {
         this.googleMap = googleMap;
 
         Firebase.setAndroidContext(context);
@@ -40,35 +46,35 @@ public class FirebaseCliente {
 
         roomRef = myFirebaseRef.child(room);
 
-        // add um listener para quando um valor mudar no B do firebase
+        // add um listener para quando a posicao do entregador mudar no firebase
         roomRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                Log.d("ONCHANGE", snapshot.getValue().toString());
-                JSONObject jsonobj = null;
-                try {
-                    jsonobj = new JSONObject(snapshot.getValue().toString());
-                } catch (JSONException e) {
-                    Log.d("JSON EXCEPTION: ", e.getMessage());
-                }
+                Log.d("ONCHANGE", String.valueOf(snapshot.getValue()));
+                if (snapshot.getValue() == null) {
+                    isRastreable = false;
+                    EntregadorMissingDialog dialog = new EntregadorMissingDialog();
+                    dialog.show(context.getFragmentManager(), "");
+                } else {
+                    JSONObject jsonobj = null;
+                    try {
+                        jsonobj = new JSONObject(snapshot.getValue().toString());
+                        // atualiza posição no mapa
+                        JSONObject posicao = jsonobj.getJSONObject("ENTREGADOR");
+                        double lat = (double) posicao.getDouble("latitude");
+                        double lng = (double) posicao.getDouble("longitude");
+                        if (markerEntregador == null) {
+                            // adiciona o Marker do entregador
+                            addMarcadorEntregador(lat, lng);
+                        } else {
+                            // atualiza o Marker do entregador
+                            markerEntregador.setPosition(new LatLng(lat,lng));
+                        }
 
-                // atualiza posição no mapa
-                try {
-                    JSONObject posicao = jsonobj.getJSONObject("ENTREGADOR");
-                    double lat = (double) posicao.getDouble("latitude");
-                    double lng = (double) posicao.getDouble("longitude");
-                    if (markerEntregador == null) {
-                        // adiciona o Marker do entregador
-                        addMarcadorEntregador(lat, lng);
-                    } else {
-                        // atualiza o Marker do entregador
-                        markerEntregador.setPosition(new LatLng(lat,lng));
+                    } catch (JSONException e) {
+                        Log.d("JSON Ent. Pos.: ", e.getMessage());
                     }
-
-                } catch (JSONException e) {
-                    Log.d("JSON Ent. Pos.: ", e.getMessage());
                 }
-
             }
 
             @Override
@@ -87,8 +93,10 @@ public class FirebaseCliente {
      */
     private void addMarcadorEntregador(double lat, double lng) {
 
-        markerEntregador = googleMap.addMarker(new MarkerOptions().position(
-              new LatLng(lat, lng)).title("Entregador").icon(
-                BitmapDescriptorFactory.fromResource(R.drawable.delivery)));
+        if (googleMap != null) {
+            markerEntregador = googleMap.addMarker(new MarkerOptions().position(
+                    new LatLng(lat, lng)).title("Entregador").icon(
+                    BitmapDescriptorFactory.fromResource(R.drawable.icon_grayscale_small)));
+        }
     }
 }

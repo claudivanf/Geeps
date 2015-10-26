@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.geeps.R;
+import android.geeps.dialogs.ConnectionMissingDialog;
 import android.geeps.http.HTTPCheckUser;
 import android.geeps.http.HTTPPostUser;
 import android.geeps.util.SPManager;
@@ -20,6 +21,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,11 +35,13 @@ public class RegistryActivity extends Activity {
     private EditText name, phone;
     private String countryCode;
     private HTTPCheckUser checkUser;
+    private ConnectionMissingDialog check;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign_up);
+        this.check = new ConnectionMissingDialog(this);
 
         spManager = new SPManager(this);
 
@@ -49,17 +54,34 @@ public class RegistryActivity extends Activity {
     }
 
     private void clienteListener() {
+
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (hasConnection(getApplicationContext())) {
+
+                if (check.hasConnection()) {
                     if (validRegisterFields()) {
 
                         checkUser = new HTTPCheckUser();
 
-                        if (!checkUser.check(phone.getText().toString())){
-                            Toast.makeText(getApplicationContext(), "Usuário já cadastrado", Toast.LENGTH_LONG).show();
-                        }else{
+                        if (!checkUser.check(phone.getText().toString())) { //Usuário já cadastrado; Checar dados para preencher campos do spManager.
+                            JSONObject jo = checkUser.getJsonClient();
+                            try {
+                                if (jo.getString("regId").equals(spManager.getRegId())) { //É o mesmo usuário (de acordo com o regId). Atualizar dados no celular.
+                                    spManager.saveData(name.getText().toString(), phone.getText().toString(), countryCode);
+                                    Toast.makeText(getApplicationContext(), "Usuário atualizado", Toast.LENGTH_LONG).show();
+                                    Intent myIntent = new Intent(getApplicationContext(), ActBarActivity.class);
+                                    startActivity(myIntent);
+                                    finish();
+                                } else if (jo.getString("regId") == null) {
+                                    //TODO Atualizar dados no servidor quando o usuário não tiver ainda regId;
+                                } else { //Não é o mesmo usuário
+                                    Toast.makeText(getApplicationContext(), "Usuário já cadastrado", Toast.LENGTH_LONG).show();
+                                }
+                            } catch (Exception e) {
+                                Toast.makeText(getApplicationContext(), "Erro interno, tente novamente", Toast.LENGTH_LONG).show();
+                            }
+                        } else { //Novo usuário
                             HTTPPostUser postUser = new HTTPPostUser();
                             spManager.saveData(name.getText().toString(), phone.getText().toString(), countryCode);
 
@@ -77,14 +99,12 @@ public class RegistryActivity extends Activity {
                     } else {
                         Toast.makeText(getApplicationContext(), "Preencha os dados corretamente", Toast.LENGTH_LONG).show();
                     }
-                } else {
-                    Toast.makeText(getApplicationContext(), "Verifique sua conexão de internet", Toast.LENGTH_LONG).show();
                 }
             }
         });
     }
 
-    private boolean validRegisterFields(){
+    private boolean validRegisterFields() {
         return !name.getText().toString().isEmpty() &&
                 !phone.getText().toString().isEmpty() &&
                 !countryCode.isEmpty();
@@ -122,7 +142,6 @@ public class RegistryActivity extends Activity {
                 int selectedPosition = fCountry.indexOf(selectedCountry);
                 countryCode = fCode.get(selectedPosition);
                 // Here is your corresponding country code
-                System.out.println("### countryCode: " + countryCode);
             }
 
             @Override
