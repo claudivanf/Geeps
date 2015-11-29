@@ -55,4 +55,5 @@ public class UserOrderAdapter extends ArrayAdapter<UserOrder> {
         TextView description;
         TextView title;
     }
+
 }

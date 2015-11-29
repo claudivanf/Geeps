@@ -9,10 +9,13 @@ import android.geeps.R;
 import android.geeps.dialogs.ConnectionMissingDialog;
 import android.geeps.http.HTTPCheckUser;
 import android.geeps.http.HTTPPostUser;
+import android.geeps.util.PhoneEditText;
 import android.geeps.util.SPManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.telephony.PhoneNumberUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -32,7 +35,8 @@ public class RegistryActivity extends Activity {
     private Button registerButton;
     private SPManager spManager;
 
-    private EditText name, phone;
+    private EditText name;
+    private PhoneEditText phone;
     private String countryCode;
     private HTTPCheckUser checkUser;
     private ConnectionMissingDialog check;
@@ -46,7 +50,7 @@ public class RegistryActivity extends Activity {
         spManager = new SPManager(this);
 
         this.name = (EditText) findViewById(R.id.user_name);
-        this.phone = (EditText) findViewById(R.id.user_phone);
+        this.phone = (PhoneEditText) findViewById(R.id.user_phone);
         this.registerButton = (Button) findViewById(R.id.btn_registry);
 
         fillSpinnerCoutries();
@@ -64,11 +68,11 @@ public class RegistryActivity extends Activity {
 
                         checkUser = new HTTPCheckUser();
 
-                        if (!checkUser.check(phone.getText().toString())) { //Usuário já cadastrado; Checar dados para preencher campos do spManager.
+                        if (!checkUser.check(formatPhoneToBD(phone.getText().toString()))) { //Usuário já cadastrado; Checar dados para preencher campos do spManager.
                             JSONObject jo = checkUser.getJsonClient();
                             try {
                                 if (jo.getString("regId").equals(spManager.getRegId())) { //É o mesmo usuário (de acordo com o regId). Atualizar dados no celular.
-                                    spManager.saveData(name.getText().toString(), phone.getText().toString(), countryCode);
+                                    spManager.saveData(name.getText().toString(), formatPhoneToBD(phone.getText().toString()), countryCode);
                                     Toast.makeText(getApplicationContext(), "Usuário atualizado", Toast.LENGTH_LONG).show();
                                     Intent myIntent = new Intent(getApplicationContext(), ActBarActivity.class);
                                     startActivity(myIntent);
@@ -83,7 +87,7 @@ public class RegistryActivity extends Activity {
                             }
                         } else { //Novo usuário
                             HTTPPostUser postUser = new HTTPPostUser();
-                            spManager.saveData(name.getText().toString(), phone.getText().toString(), countryCode);
+                            spManager.saveData(name.getText().toString(), formatPhoneToBD(phone.getText().toString()), countryCode);
 
                             String response = postUser.registryUser(
                                     spManager.getName(),
@@ -172,5 +176,10 @@ public class RegistryActivity extends Activity {
             }
         }
         return connectedWifi || connectedMobile;
+    }
+
+    private String formatPhoneToBD(String unformatedPhone){
+        String formatPhone = unformatedPhone.replaceAll("[()\\s-]+", "");
+        return formatPhone;
     }
 }
