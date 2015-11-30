@@ -143,6 +143,7 @@ public class ActBarActivity extends AppCompatActivity {
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
         private static List<UserOrder> mItems;
+        private static List<UserOrder> mItemsEntregador;
         /**
          * Returns a new instance of this fragment for the given section
          * number.
@@ -172,9 +173,7 @@ public class ActBarActivity extends AppCompatActivity {
                 Resources resources = getResources();
 
                 HTTPPedidos httpPedidos = new HTTPPedidos();
-                System.out.println("######### "+httpPedidos);
                 JSONArray arrayPedidos = httpPedidos.getPedidos(spManager.getPhone());
-                Log.d("PEDIDOS_CLIENTE", arrayPedidos.toString());
                 for (int i = 0; i < arrayPedidos.length(); i++) {
                     try {
                         mItems.add(new UserOrder(resources.getDrawable(R.drawable.icon),
@@ -210,16 +209,14 @@ public class ActBarActivity extends AppCompatActivity {
             }else{
                 SPManager spManager = new SPManager(getActivity());
                 // initialize the items list
-                mItems = new ArrayList<UserOrder>();
+                mItemsEntregador = new ArrayList<UserOrder>();
                 Resources resources = getResources();
 
                 HTTPPedidosEntregador httpPedidos = new HTTPPedidosEntregador();
-                System.out.println("######### "+httpPedidos);
                 JSONArray arrayPedidos = httpPedidos.getPedidos(spManager.getPhone());
-                Log.d("PEDIDOS_ENTREGADOR", arrayPedidos.toString());
                 for (int i = 0; i < arrayPedidos.length(); i++) {
                     try {
-                        mItems.add(new UserOrder(resources.getDrawable(R.drawable.icon),
+                        mItemsEntregador.add(new UserOrder(resources.getDrawable(R.drawable.icon),
                                 arrayPedidos.getJSONObject(i).getString("status")
                                 , arrayPedidos.getJSONObject(i).getString("empresa_nome"),
                                 arrayPedidos.getJSONObject(i).getString("entregador_id")));
@@ -229,7 +226,7 @@ public class ActBarActivity extends AppCompatActivity {
                 }
 
                 // initialize and set the list adapter
-                listView.setAdapter(new UserOrderAdapter(getActivity(), mItems));
+                listView.setAdapter(new UserOrderAdapter(getActivity(), mItemsEntregador));
 //                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //                    @Override
 //                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
