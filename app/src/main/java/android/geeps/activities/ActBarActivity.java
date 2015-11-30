@@ -8,6 +8,7 @@ import android.geeps.adapters.UserOrderAdapter;
 import android.geeps.dialogs.ConnectionMissingDialog;
 import android.geeps.dialogs.GPSMissingDialog;
 import android.geeps.http.HTTPPedidos;
+import android.geeps.http.HTTPPedidosEntregador;
 import android.geeps.models.UserOrder;
 import android.geeps.util.SPManager;
 import android.os.Bundle;
@@ -173,6 +174,7 @@ public class ActBarActivity extends AppCompatActivity {
                 HTTPPedidos httpPedidos = new HTTPPedidos();
                 System.out.println("######### "+httpPedidos);
                 JSONArray arrayPedidos = httpPedidos.getPedidos(spManager.getPhone());
+                Log.d("PEDIDOS_CLIENTE", arrayPedidos.toString());
                 for (int i = 0; i < arrayPedidos.length(); i++) {
                     try {
                         mItems.add(new UserOrder(resources.getDrawable(R.drawable.icon),
@@ -205,10 +207,50 @@ public class ActBarActivity extends AppCompatActivity {
                         }
                     }
                 });
+            }else{
+                SPManager spManager = new SPManager(getActivity());
+                // initialize the items list
+                mItems = new ArrayList<UserOrder>();
+                Resources resources = getResources();
+
+                HTTPPedidosEntregador httpPedidos = new HTTPPedidosEntregador();
+                System.out.println("######### "+httpPedidos);
+                JSONArray arrayPedidos = httpPedidos.getPedidos(spManager.getPhone());
+                Log.d("PEDIDOS_ENTREGADOR", arrayPedidos.toString());
+                for (int i = 0; i < arrayPedidos.length(); i++) {
+                    try {
+                        mItems.add(new UserOrder(resources.getDrawable(R.drawable.icon),
+                                arrayPedidos.getJSONObject(i).getString("status")
+                                , arrayPedidos.getJSONObject(i).getString("empresa_nome"),
+                                arrayPedidos.getJSONObject(i).getString("entregador_id")));
+                    } catch (JSONException e) {
+                        Log.d("JSON PARSER ERROR", e.getMessage());
+                    }
+                }
+
+                // initialize and set the list adapter
+                listView.setAdapter(new UserOrderAdapter(getActivity(), mItems));
+//                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                    @Override
+//                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                        ConnectionMissingDialog connection = new ConnectionMissingDialog(getActivity());
+//                        GPSMissingDialog gps = new GPSMissingDialog(getActivity());
+//                        if(connection.checkInternet() && gps.checkGPSConnection()) {
+//                            if(mItems.get(position).title.equals("EM ANDAMENTO")){
+//                                String entregador_id = mItems.get(position).entregador_id;
+//                                Bundle bundle = new Bundle();
+//                                bundle.putString("entregador_id", entregador_id);
+//                                Intent intent = new Intent(getActivity(), MapsActivity.class);
+//                                intent.putExtras(bundle);
+//                                startActivity(intent);
+//                            } else {
+//                                Toast.makeText(getActivity().getApplicationContext(), "Pedido já concluído ou não saiu para entrega", Toast.LENGTH_LONG).show();
+//                            }
+//                        }
+//                    }
+//                });
             }
 
-//            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-//            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
             return rootView;
         }
     }

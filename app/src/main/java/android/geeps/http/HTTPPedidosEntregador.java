@@ -18,16 +18,16 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HTTPPedidos extends AsyncTask<String, Void, String> {
+public class HTTPPedidosEntregador extends AsyncTask<String, Void, String> {
 
    private static final String HEADER_VALUE = "application/json";
-    private static final String URL = "http://geeps2.herokuapp.com/usuario/pedidos";
+    private static final String URL = "http://geeps2.herokuapp.com/usuario/pedidos_entregador";
 
    @Override
    protected final String doInBackground(final String... params) {
 
       Map<String, String> comment = new HashMap<String, String>();
-      comment.put("phone", params[0]);
+      comment.put("telefoneEntregador", params[0]);
 
       String json = new GsonBuilder().create().toJson(comment, Map.class);
       String response = "";
@@ -59,9 +59,9 @@ public class HTTPPedidos extends AsyncTask<String, Void, String> {
        return response;
    }
 
-   public JSONArray getPedidos(String phone){
+   public JSONArray getPedidos(String telefoneEntregador){
        try {
-           String response = this.execute(phone).get();
+           String response = this.execute(telefoneEntregador).get();
            JSONArray arrayPedidos = new JSONArray(response);
            return arrayPedidos;
        } catch (Exception e) {
