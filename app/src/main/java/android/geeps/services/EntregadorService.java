@@ -31,7 +31,7 @@ public class EntregadorService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Bundle bundle = intent.getExtras();
-        String room = bundle.getString("entregador_id");
+        String room = bundle.getString("ENTREGADOR_ID");
         mylocationListener.start(room);
         return START_STICKY;
     }
@@ -99,10 +99,11 @@ public class EntregadorService extends Service {
         @Override
         public void onConnected(Bundle bundle) {
             Log.d("CONNECTED :", "está conectado");
+            if(room != null) {
+                fbEntregador.init(context, room);
+                startLocationUpdates();
+            }
             fbEntregador = new FirebaseEntregador();
-            fbEntregador.init(context, room);
-            startLocationUpdates();
-
         }
 
         @Override
